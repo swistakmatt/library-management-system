@@ -7,5 +7,5 @@ CREATE TABLE IF NOT EXISTS Album (
   artist TEXT NOT NULL,
   album TEXT NOT NULL,
   trackNumber INTEGER NOT NULL,
-  tracks TEXT NOT NULL,
+  tracks TEXT NOT NULL
 )

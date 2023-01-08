@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS Episode (
   series TEXT NOT NULL,
   episodeNumber INTEGER NOT NULL,
   seasonNumber INTEGER NOT NULL,
-  cast TEXT NOT NULL,
+  cast TEXT NOT NULL
 )

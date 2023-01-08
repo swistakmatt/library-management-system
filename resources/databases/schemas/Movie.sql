@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS Movie (
     length INTEGER NOT NULL,
     genre TEXT NOT NULL,
     releaseDate TEXT NOT NULL,
-    cast TEXT NOT NULL,
+    cast TEXT NOT NULL
 );

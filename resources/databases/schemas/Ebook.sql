@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS Ebook (
   numberOfPages INTEGER NOT NULL,
   genre TEXT NOT NULL,
   releaseDate TEXT NOT NULL,
-  author TEXT NOT NULL,
+  author TEXT NOT NULL
 )
