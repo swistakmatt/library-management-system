@@ -1,7 +1,7 @@
 import { MediaElement } from './MediaElement';
 
-export interface EbookMetadata {
-  lenght: number;
+export interface SongMetadata {
+  length: number;
   genre: string;
   releaseDate: string;
   artist: string;
@@ -9,10 +9,10 @@ export interface EbookMetadata {
   trackNumber: number;
 }
 
-export class Ebook extends MediaElement {
-  public metadata: EbookMetadata;
+export class Song extends MediaElement {
+  public metadata: SongMetadata;
 
-  constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: EbookMetadata) {
+  constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: SongMetadata) {
     super(title, releaseYear, path, owner, _public);
     this.metadata = metadata;
   }
@@ -24,7 +24,7 @@ export class Ebook extends MediaElement {
     console.log(`   Wlasciciel: ${this.getOwner()}`);
     console.log(`   Publiczny: ${this.isPublic() ? 'true' : 'false'}`);
 
-    console.log(`   Dlugosc: ${this.secondsToHours(this.metadata.lenght)}`);
+    console.log(`   Dlugosc: ${Song.secondsToHours(this.metadata.length)}`);
     console.log(`   Gatunek: ${this.metadata.genre}`);
     console.log(`   Data wydania: ${this.metadata.releaseDate}`);
 
@@ -36,5 +36,9 @@ export class Ebook extends MediaElement {
   public printLocation(): void {
     console.log(`Biblioteka[${this.getOwner()}] -> Muzyka -> ${this.metadata.artist} 
     -> ${this.metadata.album} -> ${this.metadata.trackNumber} -> ${this.title}`);
+  }
+
+  public getMetadata(): SongMetadata {
+    return this.metadata;
   }
 }

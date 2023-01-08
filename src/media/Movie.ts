@@ -22,7 +22,7 @@ export class Movie extends MediaElement {
     console.log(`   Wlasciciel: ${this.getOwner()}`);
     console.log(`   Publiczny: ${this.isPublic() ? 'true' : 'false'}`);
 
-    console.log(`   Dlugosc: ${this.secondsToHours(this.metadata.length)}`);
+    console.log(`   Dlugosc: ${Movie.secondsToHours(this.metadata.length)}`);
     console.log(`   Gatunek: ${this.metadata.genre}`);
     console.log(`   Data wydania: ${this.metadata.releaseDate}`);
 

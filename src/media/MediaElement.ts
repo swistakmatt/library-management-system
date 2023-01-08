@@ -21,11 +21,17 @@ export class MediaElement {
     this._public = _public;
   }
 
-  public secondsToHours(length: number): string {
+  public static secondsToHours(length: number): string {
     const hours = Math.floor(length / 3600);
     const minutes = Math.floor((length / 60) % 60);
     const seconds = length % 60;
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  public static secondsToMinutes(length: number): string {
+    const minutes = Math.floor(length / 60).toString().padStart(2, '0');
+    const seconds = (length % 60).toString().padStart(2, '0');
+    return `${minutes}:${seconds}`;
   }
 
   public setTitle(title: string): void {
