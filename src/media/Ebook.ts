@@ -1,16 +1,16 @@
 import { MediaElement } from './MediaElement';
 
-export interface MovieMetadata {
-  length: number;
+export interface EbookMetadata {
+  numberOfPages: number;
   genre: string;
   releaseDate: string;
-  cast: { [actor: string]: string };
+  author: string;
 }
 
-export class Movie extends MediaElement {
-  public metadata: MovieMetadata;
+export class Ebook extends MediaElement {
+  public metadata: EbookMetadata;
 
-  constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: MovieMetadata) {
+  constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: EbookMetadata) {
     super(title, releaseYear, path, owner, _public);
     this.metadata = metadata;
   }
@@ -22,17 +22,14 @@ export class Movie extends MediaElement {
     console.log(`   Wlasciciel: ${this.getOwner()}`);
     console.log(`   Publiczny: ${this.isPublic() ? 'true' : 'false'}`);
 
-    console.log(`   Dlugosc: ${this.secondsToHours(this.metadata.length)}`);
+    console.log(`   Ilosc stron: ${this.metadata.numberOfPages}`);
     console.log(`   Gatunek: ${this.metadata.genre}`);
     console.log(`   Data wydania: ${this.metadata.releaseDate}`);
 
-    console.log(`   Obsada:`);
-    for (const [actor, role] of Object.entries(this.metadata.cast)) {
-      console.log(`      ${actor}: ${role}`);
-    }
+    console.log(`   Autor: ${this.metadata.author}`);
   }
 
   public printLocation(): void {
-    console.log(`Biblioteka[${this.getOwner()}] -> Filmy -> ${this.title}(${this.releaseYear})`);
+    console.log(`Biblioteka[${this.getOwner()}] -> Ebooki -> ${this.metadata.author} -> ${this.title}`);
   }
 }
