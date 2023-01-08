@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS Episode (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  releaseYear INTEGER NOT NULL,
+  path TEXT NOT NULL,
+  owner TEXT NOT NULL,
+  public BOOLEAN NOT NULL,
+  length INTEGER NOT NULL,
+  genre TEXT NOT NULL,
+  releaseDate TEXT NOT NULL,
+  series TEXT NOT NULL,
+  episodeNumber INTEGER NOT NULL,
+  seasonNumber INTEGER NOT NULL,
+  cast TEXT NOT NULL,
+)

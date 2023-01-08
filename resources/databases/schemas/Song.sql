@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS Song (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  releaseYear INTEGER NOT NULL,
+  path TEXT NOT NULL,
+  owner TEXT NOT NULL,
+  public BOOLEAN NOT NULL,
+  length INTEGER NOT NULL,
+  genre TEXT NOT NULL,
+  releaseDate TEXT NOT NULL,
+  artist TEXT NOT NULL,
+  album TEXT NOT NULL,
+  trackNumber INTEGER NOT NULL,
+)
