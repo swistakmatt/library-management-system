@@ -1,15 +1,29 @@
-import { Movie, MovieMetadata } from 'media/Movie';
+import { Movie, MovieMetadata } from '../Movie';
 import { MediaElementBuilder } from './MediaElementBuilder';
 
 export class MovieBuilder extends MediaElementBuilder {
   private metadata: MovieMetadata;
 
-  constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: MovieMetadata) {
+  constructor();
+  constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: MovieMetadata);
+  constructor(
+    title = 'Unknown Movie',
+    releaseYear?: number,
+    path?: string,
+    owner?: string,
+    _public?: boolean,
+    metadata: MovieMetadata = {
+      cast: {},
+      genre: 'Unknown Genre',
+      length: 0,
+      releaseDate: '1970-01-01',
+    }
+  ) {
     super(title, releaseYear, path, owner, _public);
     this.metadata = metadata;
   }
 
-  public setMetadata(metadata: MovieMetadata): MovieBuilder {
+  public setMetadata(metadata: MovieMetadata): this {
     this.metadata = metadata;
     return this;
   }

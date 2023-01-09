@@ -1,13 +1,20 @@
-import { MediaElement } from 'media/MediaElement';
+import { MediaElement, MediaMetadata } from '../MediaElement';
 
-export class MediaElementBuilder {
+export class MediaElementBuilder implements MediaMetadata {
+  public id: number | null = null;
   public title: string;
   public releaseYear: number;
   public path: string;
   public owner: string;
   public _public: boolean;
 
-  constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean) {
+  constructor(
+    title = 'Unknown Media',
+    releaseYear = 0,
+    path = '',
+    owner = '',
+    _public = false,
+  ) {
     this.title = title;
     this.releaseYear = releaseYear;
     this.path = path;
@@ -15,29 +22,38 @@ export class MediaElementBuilder {
     this._public = _public;
   }
 
-  public setTitle(title: string): MediaElementBuilder {
+  public setId(id: number): this {
+    this.id = id;
+    return this;
+  }
+
+  public setTitle(title: string): this {
     this.title = title;
     return this;
   }
 
-  public setReleaseYear(releaseYear: number): MediaElementBuilder {
+  public setReleaseYear(releaseYear: number): this {
     this.releaseYear = releaseYear;
     return this;
   }
 
-  public setPath(path: string): MediaElementBuilder {
+  public setPath(path: string): this {
     this.path = path;
     return this;
   }
 
-  public setOwner(owner: string): MediaElementBuilder {
+  public setOwner(owner: string): this {
     this.owner = owner;
     return this;
   }
 
-  public setPublic(isPublic: boolean): MediaElementBuilder {
+  public setPublic(isPublic: boolean): this {
     this._public = isPublic;
     return this;
+  }
+
+  public getId(): number | null {
+    return this.id;
   }
 
   public getTitle(): string {

@@ -1,15 +1,26 @@
-import { Album } from 'media/Album';
-import { Song, SongMetadata } from 'media/Song';
+import { Album } from '../Album';
+import { Song, SongMetadata } from '../Song';
 
 export class AlbumBuilder {
   private metadata: SongMetadata;
   private tracks: Song[] = [];
 
-  constructor(_public: boolean, metadata: SongMetadata) {
+  constructor();
+  constructor(metadata: SongMetadata);
+  constructor(
+    metadata: SongMetadata = {
+      album: 'Unknown Album',
+      artist: 'Unknown Artist',
+      length: 0,
+      genre: 'Unknown Genre',
+      releaseDate: '1970-01-01',
+      trackNumber: 0,
+    }
+  ) {
     this.metadata = metadata;
   }
 
-  public setMetadata(metadata: SongMetadata): AlbumBuilder {
+  public setMetadata(metadata: SongMetadata): this {
     this.metadata = metadata;
     return this;
   }
@@ -18,7 +29,7 @@ export class AlbumBuilder {
     return this.metadata;
   }
 
-  public addTrack(track: Song): AlbumBuilder {
+  public addTrack(track: Song): this {
     this.tracks.push(track);
     return this;
   }

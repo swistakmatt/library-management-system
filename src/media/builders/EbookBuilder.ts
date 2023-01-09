@@ -1,15 +1,29 @@
-import { Ebook, EbookMetadata } from 'media/Ebook';
+import { Ebook, EbookMetadata } from '../Ebook';
 import { MediaElementBuilder } from './MediaElementBuilder';
 
 export class EbookBuilder extends MediaElementBuilder {
   public metadata: EbookMetadata;
 
-  constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: EbookMetadata) {
+  constructor();
+  constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: EbookMetadata);
+  constructor(
+    title = 'Unknown Song',
+    releaseYear?: number,
+    path?: string,
+    owner?: string,
+    _public?: boolean,
+    metadata: EbookMetadata = {
+      author: 'Unknown Author',
+      genre: 'Unknown Genre',
+      numberOfPages: 0,
+      releaseDate: '1970-01-01',
+    }
+  ) {
     super(title, releaseYear, path, owner, _public);
     this.metadata = metadata;
   }
 
-  public setMetadata(metadata: EbookMetadata): EbookBuilder {
+  public setMetadata(metadata: EbookMetadata): this {
     this.metadata = metadata;
     return this;
   }

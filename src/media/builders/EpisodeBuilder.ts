@@ -1,15 +1,32 @@
-import { Episode, EpisodeMetadata } from 'media/Episode';
+import { Episode, EpisodeMetadata } from '../Episode';
 import { MediaElementBuilder } from './MediaElementBuilder';
 
 export class EpisodeBuilder extends MediaElementBuilder {
   public metadata: EpisodeMetadata;
 
-  constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: EpisodeMetadata) {
+  constructor();
+  constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: EpisodeMetadata);
+  constructor(
+    title = 'Unknown Song',
+    releaseYear?: number,
+    path?: string,
+    owner?: string,
+    _public?: boolean,
+    metadata: EpisodeMetadata = {
+      cast: {},
+      genre: 'Unknown Genre',
+      length: 0,
+      releaseDate: '1970-01-01',
+      seasonNumber: 0,
+      episodeNumber: 0,
+      series: 'Unknown Series',
+    }
+  ) {
     super(title, releaseYear, path, owner, _public);
     this.metadata = metadata;
   }
 
-  public setMetadata(metadata: EpisodeMetadata): EpisodeBuilder {
+  public setMetadata(metadata: EpisodeMetadata): this {
     this.metadata = metadata;
     return this;
   }
