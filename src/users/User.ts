@@ -1,4 +1,12 @@
+export interface UserConstructor {
+  username: string;
+  password: string;
+  displayName: string;
+  admin: boolean;
+}
+
 export class User {
+  private id: number | null = null;
   private username: string;
   private password: string;
   private displayName: string;
@@ -9,6 +17,21 @@ export class User {
     this.password = password;
     this.displayName = displayName;
     this.admin = admin;
+  }
+
+  public static isUserConstructor(obj: unknown): obj is UserConstructor {
+    return (
+      obj !== null && typeof obj === 'object' &&
+      'id' in obj && typeof obj.id === 'number' &&
+      'username' in obj && typeof obj.username === 'string' &&
+      'password' in obj && typeof obj.password === 'string' &&
+      'displayName' in obj && typeof obj.displayName === 'string' &&
+      'admin' in obj && typeof obj.admin === 'boolean'
+    );
+  }
+
+  public getId(): number | null {
+    return this.id;
   }
 
   public getUsername(): string {
@@ -25,6 +48,10 @@ export class User {
 
   public isAdmin(): boolean {
     return this.admin;
+  }
+
+  public setId(id: number): void {
+    this.id = id;
   }
 
   public setPassword(newPassword: string): void {
