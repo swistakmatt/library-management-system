@@ -1,3 +1,4 @@
+import { readdirSync, readFileSync } from 'fs';
 import { Database as SqliteDb } from 'sqlite3';
 import { AsyncDatabase } from './AsyncDatabase';
 
@@ -9,6 +10,19 @@ export class Database {
 
   private constructor() {
     this.db = new AsyncDatabase(new SqliteDb('db.sqlite', this.handleInitError));
+  }
+
+  public async initTables(): Promise<void> {
+    try {
+      const tables = readdirSync('./resources/databases/schemas', { withFileTypes: true })
+        .filter((dirent) => dirent.isFile() && dirent.name.endsWith('.sql'))
+        .map((dirent) => readFileSync(`./resources/databases/schemas/${dirent.name}`, { encoding: 'utf-8' }));
+
+
+      await Promise.all(tables.map((table) => this.db.run(table)));
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   private handleInitError = (err: Error | null): void => {

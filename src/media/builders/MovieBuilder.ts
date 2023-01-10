@@ -33,6 +33,9 @@ export class MovieBuilder extends MediaElementBuilder {
   }
 
   public build(): Movie {
-    return new Movie(this.title, this.releaseYear, this.path, this.owner, this._public, this.metadata);
+    const movie = new Movie(this.title, this.releaseYear, this.path, this.owner, this._public, this.metadata);
+    this.softForceId(movie);
+
+    return movie;
   }
 }

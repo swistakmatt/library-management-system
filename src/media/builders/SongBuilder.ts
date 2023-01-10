@@ -35,6 +35,9 @@ export class SongBuilder extends MediaElementBuilder {
   }
 
   public build(): Song {
-    return new Song(this.title, this.releaseYear, this.path, this.owner, this._public, this.metadata);
+    const song = new Song(this.title, this.releaseYear, this.path, this.owner, this._public, this.metadata);
+    this.softForceId(song);
+
+    return song;
   }
 }

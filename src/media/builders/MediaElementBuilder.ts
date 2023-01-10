@@ -72,7 +72,16 @@ export class MediaElementBuilder implements MediaMetadata {
     return this.owner;
   }
 
+  protected softForceId(mediaElement: MediaElement): void {
+    if (this.id !== null) {
+      mediaElement.setId(this.id);
+    }
+  }
+
   public build(): MediaElement {
-    return new MediaElement(this.title, this.releaseYear, this.path, this.owner, this._public);
+    const mediaElement = new MediaElement(this.title, this.releaseYear, this.path, this.owner, this._public);
+    this.softForceId(mediaElement);
+
+    return mediaElement;
   }
 }

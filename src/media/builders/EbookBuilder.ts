@@ -29,6 +29,9 @@ export class EbookBuilder extends MediaElementBuilder {
   }
 
   public build(): Ebook {
-    return new Ebook(this.title, this.releaseYear, this.path, this.owner, this._public, this.metadata);
+    const ebook = new Ebook(this.title, this.releaseYear, this.path, this.owner, this._public, this.metadata);
+    this.softForceId(ebook);
+
+    return ebook;
   }
 }

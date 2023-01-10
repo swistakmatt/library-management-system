@@ -33,6 +33,10 @@ export class Ebook extends MediaElement {
     console.log(`Biblioteka[${this.getOwner()}] -> Ebooki -> ${this.metadata.author} -> ${this.title}`);
   }
 
+  public getMetadata(): EbookMetadata {
+    return this.metadata;
+  }
+
   public static isEbookMetadata(obj: unknown): obj is EbookMetadata {
     return (
       obj !== null && typeof obj === 'object' &&

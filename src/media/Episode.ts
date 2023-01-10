@@ -43,6 +43,10 @@ export class Episode extends MediaElement {
     -> Sezon ${this.metadata.seasonNumber} -> Epizod ${this.metadata.episodeNumber} -> ${this.title}(${this.releaseYear})`);
   }
 
+  public getMetadata(): EpisodeMetadata {
+    return this.metadata;
+  }
+
   public static isEpisodeMetadata(obj: unknown): obj is EpisodeMetadata {
     return (
       obj !== null && typeof obj === 'object' &&

@@ -1,14 +1,16 @@
 import { Database as SqliteDb } from 'sqlite3';
 
 
+type SQLParamType = string | number | boolean;
+
 interface AsyncDatabaseInterface {
   close(): Promise<void>;
 
-  run(sql: string, params?: { [index: string]: string | number }): Promise<void>;
+  run(sql: string, params?: { [index: string]: SQLParamType }): Promise<void>;
 
-  get<T>(sql: string, params?: { [index: string]: string | number }): Promise<T | undefined>;
+  get<T>(sql: string, params?: { [index: string]: SQLParamType }): Promise<T | undefined>;
 
-  all<T>(sql: string, params?: { [index: string]: string | number }): Promise<T[]>;
+  all<T>(sql: string, params?: { [index: string]: SQLParamType }): Promise<T[]>;
 
   exec(sql: string): Promise<void>;
 }
@@ -29,7 +31,7 @@ export class AsyncDatabase implements AsyncDatabaseInterface {
     });
   }
 
-  public run(sql: string, params?: { [index: string]: string | number }): Promise<void> {
+  public run(sql: string, params?: { [index: string]: SQLParamType }): Promise<void> {
     return new Promise((resolve, reject) => {
       this.database.run(sql, params ?? {}, (err) => {
         if (err) reject(err);
@@ -38,7 +40,7 @@ export class AsyncDatabase implements AsyncDatabaseInterface {
     });
   }
 
-  public get<T>(sql: string, params?: { [index: string]: string | number }): Promise<T | undefined> {
+  public get<T>(sql: string, params?: { [index: string]: SQLParamType }): Promise<T | undefined> {
     return new Promise((resolve, reject) => {
       this.database.get(sql, params ?? {}, (err, rows) => {
         if (err) reject(err);
@@ -47,7 +49,7 @@ export class AsyncDatabase implements AsyncDatabaseInterface {
     });
   }
 
-  public all<T>(sql: string, params?: { [index: string]: string | number }): Promise<T[]> {
+  public all<T>(sql: string, params?: { [index: string]: SQLParamType }): Promise<T[]> {
     return new Promise((resolve, reject) => {
       this.database.all(sql, params, (err, rows) => {
         if (err) reject(err);

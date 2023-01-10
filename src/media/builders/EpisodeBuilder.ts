@@ -32,6 +32,9 @@ export class EpisodeBuilder extends MediaElementBuilder {
   }
 
   public build(): Episode {
-    return new Episode(this.title, this.releaseYear, this.path, this.owner, this._public, this.metadata);
+    const episode = new Episode(this.title, this.releaseYear, this.path, this.owner, this._public, this.metadata);
+    this.softForceId(episode);
+
+    return episode;
   }
 }

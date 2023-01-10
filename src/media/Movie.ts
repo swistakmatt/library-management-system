@@ -36,6 +36,10 @@ export class Movie extends MediaElement {
     console.log(`Biblioteka[${this.getOwner()}] -> Filmy -> ${this.title}(${this.releaseYear})`);
   }
 
+  public getMetadata(): MovieMetadata {
+    return this.metadata;
+  }
+
   public static isMovieMetadata(obj: unknown): obj is MovieMetadata {
     return (
       obj !== null && typeof obj === 'object' &&
