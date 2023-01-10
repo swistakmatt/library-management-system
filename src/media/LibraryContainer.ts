@@ -117,4 +117,140 @@ export class LibraryContainer {
     this.songs = [];
     this.ebooks = [];
   }
+
+  public print(user: User): void {
+    console.log(`Ilosc elementow w bibliotece: ${this.countUserLibrary(user)}`);
+    console.log(`Ilosc filmow: ${this.countUserMedia(user, this.movies)}`);
+    for (const movie of this.movies) {
+      if (!movie.isPublic()) {
+        if (!user.isAdmin() && user.getUsername() !== movie.getOwner()) {
+          continue;
+        }
+      }
+      movie.print();
+    }
+    console.log(`Ilosc odcinkow: ${this.countUserMedia(user, this.episodes)}`);
+    for (const episode of this.episodes) {
+      if (!episode.isPublic()) {
+        if (!user.isAdmin() && user.getUsername() !== episode.getOwner()) {
+          continue;
+        }
+      }
+      episode.print();
+    }
+    console.log(`Ilosc utworow: ${this.countUserMedia(user, this.songs)}`);
+    for (const song of this.songs) {
+      if (!song.isPublic()) {
+        if (!user.isAdmin() && user.getUsername() !== song.getOwner()) {
+          continue;
+        }
+      }
+      song.print();
+    }
+    console.log(`Ilosc ebookow: ${this.countUserMedia(user, this.ebooks)}`);
+    for (const ebook of this.ebooks) {
+      if (!ebook.isPublic()) {
+        if (!user.isAdmin() && user.getUsername() !== ebook.getOwner()) {
+          continue;
+        }
+      }
+      ebook.print();
+    }
+  }
+
+  public printUserMedia(user: User): void {
+    let counter = 0;
+    console.log(`Ilosc elementow w bibliotece: ${this.countUserLibrary(user)}`);
+    console.log(`Ilosc filmow: ${this.countUserMedia(user, this.movies)}`);
+    for (const movie of this.movies) {
+      if (movie.getOwner() === user.getUsername()) {
+        movie.print();
+        counter += 1;
+      }
+    }
+    console.log(`Ilosc odcinkow: ${this.countUserMedia(user, this.episodes)}`);
+    for (const episode of this.episodes) {
+      if (episode.getOwner() === user.getUsername()) {
+        episode.print();
+        counter += 1;
+      }
+    }
+    console.log(`Ilosc utworow: ${this.countUserMedia(user, this.songs)}`);
+    for (const song of this.songs) {
+      if (song.getOwner() === user.getUsername()) {
+        song.print();
+        counter += 1;
+      }
+    }
+    console.log(`Ilosc ebookow: ${this.countUserMedia(user, this.ebooks)}`);
+    for (const ebook of this.ebooks) {
+      if (ebook.getOwner() === user.getUsername()) {
+        ebook.print();
+        counter += 1;
+      }
+    }
+    if (counter === 0) {
+      console.log(`Uzytkownik nie posiada elementow w bibliotece!`);
+    } else {
+      console.log(`Laczna ilosc multimediow dla [${user.getDisplayName()}]: ${counter}`);
+    }
+  }
+
+  public removeMedia(user: User, mediaContainer: MediaElement[], title: string, releaseYear: number): void {
+    let index = -1;
+    for (let i = 0; i < mediaContainer.length; i++) {
+      if (typeof mediaContainer[i] === 'string' && mediaContainer[i] !== undefined) {
+        if (mediaContainer[i]?.title === title && mediaContainer[i]?.releaseYear === releaseYear) {
+          index = i;
+          break;
+        }
+      }
+    }
+
+    for (const media of mediaContainer) {
+      if (media.title === title && media.releaseYear === releaseYear) {
+        index = mediaContainer.indexOf(media);
+        break;
+      }
+    }
+
+    if (index === -1) {
+      throw new Error(`Element o podanych parametrach nie istnieje!`);
+    }
+
+    if (!user.isAdmin() && user.getUsername() !== mediaContainer[index].getOwner()) {
+      throw new Error(`Nie masz uprawnien do usuniecia tego elementu!`);
+    }
+
+    mediaContainer.splice(index, 1);
+  }
+
+  public getAlbum(song: Song): Album {
+    const album = new Album(song);
+
+    for (const song of this.songs) {
+      if (song.getMetadata().album === album.getMetadata().album && song.metadata.artist === album.getMetadata().artist) {
+        album.addSong(song);
+      }
+    }
+
+    return album;
+  }
+
+  public editMetadata<T extends MediaElement, M>(user: User, mediaContainer: T[], title: string, releaseYear: number, metadata: M): void {
+    try {
+      for (let i = 0; i < mediaContainer.length; i++) {
+        if (mediaContainer[i].title === title && mediaContainer[i].releaseYear === releaseYear) {
+          if (mediaContainer[i].getOwner() !== user.getUsername() && !user.isAdmin()) {
+            throw new Error('Brak wymaganych uprawnien do zarzadzania tym zasobem!');
+          }
+          mediaContainer[i].setMetadata(metadata);
+          return;
+        }
+      }
+      throw new Error('Nie znaleziono elementu w bibliotece!');
+    } catch (err) {
+      console.error(err);
+    }
+  }
 }

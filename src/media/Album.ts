@@ -10,6 +10,23 @@ export class Album {
     this.releaseYear = song.releaseYear;
   }
 
+  public getMetadata(): SongMetadata {
+    return this.metadata;
+  }
+
+  public getReleaseYear(): number {
+    return this.releaseYear;
+  }
+
+  public getTracks(): Song[] {
+    return this.tracks;
+  }
+
+  public addSong(song: Song): void {
+    this.tracks.push(song);
+  }
+
+
   public print(): void {
     console.log(`Album: ${this.metadata.album} - Wykonawca: ${this.metadata.artist}`);
     console.log(`Gatunek: ${this.metadata.genre}, Rok: ${this.releaseYear}`);
