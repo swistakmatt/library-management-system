@@ -35,4 +35,14 @@ export class Movie extends MediaElement {
   public printLocation(): void {
     console.log(`Biblioteka[${this.getOwner()}] -> Filmy -> ${this.title}(${this.releaseYear})`);
   }
+
+  public static isMovieMetadata(obj: unknown): obj is MovieMetadata {
+    return (
+      obj !== null && typeof obj === 'object' &&
+      'length' in obj && typeof obj.length === 'number' &&
+      'genre' in obj && typeof obj.genre === 'string' &&
+      'releaseDate' in obj && typeof obj.releaseDate === 'string' &&
+      'cast' in obj && typeof obj.cast === 'object'
+    );
+  }
 }

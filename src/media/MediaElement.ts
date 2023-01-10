@@ -1,4 +1,5 @@
 export interface MediaMetadata {
+  id: number | null;
   title: string;
   releaseYear: number;
   path: string;
@@ -6,7 +7,8 @@ export interface MediaMetadata {
   _public: boolean;
 }
 
-export class MediaElement {
+export class MediaElement implements Omit<MediaMetadata, 'owner' | '_public'> {
+  public id: number | null = null;
   public title: string;
   public releaseYear: number;
   public path: string;
@@ -32,6 +34,10 @@ export class MediaElement {
     const minutes = Math.floor(length / 60).toString().padStart(2, '0');
     const seconds = (length % 60).toString().padStart(2, '0');
     return `${minutes}:${seconds}`;
+  }
+
+  public setId(id: number): void {
+    this.id = id;
   }
 
   public setTitle(title: string): void {
@@ -60,5 +66,17 @@ export class MediaElement {
 
   public isPublic(): boolean {
     return this._public;
+  }
+
+  public static isMediaMetadata(obj: unknown): obj is MediaMetadata & { id: number } {
+    return (
+      obj !== null && typeof obj === 'object' &&
+      'id' in obj && typeof obj.id === 'number' &&
+      'title' in obj && typeof obj.title === 'string' &&
+      'releaseYear' in obj && typeof obj.releaseYear === 'number' &&
+      'path' in obj && typeof obj.path === 'string' &&
+      'owner' in obj && typeof obj.owner === 'string' &&
+      '_public' in obj && typeof obj._public === 'boolean'
+    );
   }
 }

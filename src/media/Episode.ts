@@ -2,7 +2,7 @@ import { MediaElement } from './MediaElement';
 
 export interface EpisodeMetadata {
   length: number;
-  genere: string;
+  genre: string;
   releaseDate: string;
   series: string;
   episodeNumber: number;
@@ -27,7 +27,7 @@ export class Episode extends MediaElement {
     console.log(`   Wlasciciel: ${this.getOwner()}`);
     console.log(`   Publiczny: ${this.isPublic() ? 'true' : 'false'}`);
     console.log(`   Dlugosc: ${Episode.secondsToHours(this.metadata.length)}`);
-    console.log(`   Gatunek: ${this.metadata.genere}`);
+    console.log(`   Gatunek: ${this.metadata.genre}`);
     console.log(`   Data wydania: ${this.metadata.releaseDate}`);
     console.log(`   Nazwa serialu: ${this.metadata.series}`);
     console.log(`   Numer odcinka: ${this.metadata.episodeNumber}`);
@@ -41,5 +41,18 @@ export class Episode extends MediaElement {
   public printLocation(): void {
     console.log(`Biblioteka[${this.getOwner()}] -> Seriale -> ${this.metadata.series} 
     -> Sezon ${this.metadata.seasonNumber} -> Epizod ${this.metadata.episodeNumber} -> ${this.title}(${this.releaseYear})`);
+  }
+
+  public static isEpisodeMetadata(obj: unknown): obj is EpisodeMetadata {
+    return (
+      obj !== null && typeof obj === 'object' &&
+      'length' in obj && typeof obj.length === 'number' &&
+      'genre' in obj && typeof obj.genre === 'string' &&
+      'releaseDate' in obj && typeof obj.releaseDate === 'string' &&
+      'series' in obj && typeof obj.series === 'string' &&
+      'episodeNumber' in obj && typeof obj.episodeNumber === 'number' &&
+      'seasonNumber' in obj && typeof obj.seasonNumber === 'number' &&
+      'cast' in obj && typeof obj.cast === 'object'
+    );
   }
 }

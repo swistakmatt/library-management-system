@@ -32,4 +32,14 @@ export class Ebook extends MediaElement {
   public printLocation(): void {
     console.log(`Biblioteka[${this.getOwner()}] -> Ebooki -> ${this.metadata.author} -> ${this.title}`);
   }
+
+  public static isEbookMetadata(obj: unknown): obj is EbookMetadata {
+    return (
+      obj !== null && typeof obj === 'object' &&
+      'numberOfPages' in obj && typeof obj.numberOfPages === 'number' &&
+      'genre' in obj && typeof obj.genre === 'string' &&
+      'releaseDate' in obj && typeof obj.releaseDate === 'string' &&
+      'author' in obj && typeof obj.author === 'string'
+    );
+  }
 }

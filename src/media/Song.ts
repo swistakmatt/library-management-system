@@ -41,4 +41,16 @@ export class Song extends MediaElement {
   public getMetadata(): SongMetadata {
     return this.metadata;
   }
+
+  public static isSongMetadata(obj: unknown): obj is SongMetadata {
+    return (
+      obj !== null && typeof obj === 'object' &&
+      'length' in obj && typeof obj.length === 'number' &&
+      'genre' in obj && typeof obj.genre === 'string' &&
+      'releaseDate' in obj && typeof obj.releaseDate === 'string' &&
+      'artist' in obj && typeof obj.artist === 'string' &&
+      'album' in obj && typeof obj.album === 'string' &&
+      'trackNumber' in obj && typeof obj.trackNumber === 'number'
+    );
+  }
 }
