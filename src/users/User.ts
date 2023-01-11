@@ -1,3 +1,5 @@
+import { DatabaseElement } from '../database/DatabaseElement';
+
 export interface UserConstructor {
   username: string;
   password: string;
@@ -5,7 +7,7 @@ export interface UserConstructor {
   admin: boolean;
 }
 
-export class User {
+export class User implements DatabaseElement {
   private id: number | null = null;
   private username: string;
   private password: string;
@@ -22,7 +24,7 @@ export class User {
   public static isUserConstructor(obj: unknown): obj is UserConstructor {
     return (
       obj !== null && typeof obj === 'object' &&
-      'id' in obj && typeof obj.id === 'number' &&
+      // 'id' in obj && typeof obj.id === 'number' &&
       'username' in obj && typeof obj.username === 'string' &&
       'password' in obj && typeof obj.password === 'string' &&
       'displayName' in obj && typeof obj.displayName === 'string' &&

@@ -5,14 +5,7 @@ import { EpisodeBuilder } from '../builders/EpisodeBuilder';
 
 
 export class EpisodeRepository extends Repository<Episode> {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public async getById(id: number) {
-    const db = Database.getConnection();
-
-    const statement = await db.get('SELECT * FROM Episode WHERE id = $id', { $id: id });
-
-    return this.statementToInstance(statement);
-  }
+  protected tableName = 'Episode';
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async set(instance: Episode) {

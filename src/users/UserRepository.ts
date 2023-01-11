@@ -4,6 +4,8 @@ import { User, UserConstructor } from './User';
 
 
 export class UserRepository extends Repository<User> {
+  protected tableName = 'User';
+
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async getById(id: number) {
     const db = Database.getConnection();
@@ -19,6 +21,16 @@ export class UserRepository extends Repository<User> {
     const statement = await db.get('SELECT * FROM User WHERE username = $username', { $username: username });
 
     return this.statementToInstance(statement);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public async hasUsername(username: string) {
+    try {
+      await this.getByUsername(username);
+      return true;
+    } catch (err) {
+      return false;
+    }
   }
 
   public async set(instance: User): Promise<number> {
@@ -90,6 +102,7 @@ export class UserRepository extends Repository<User> {
        
        WHERE id = $id`,
       {
+        $id: instance.getId() as number,
         $username: instance.getUsername(),
         $password: instance.getPassword(),
         $displayName: instance.getDisplayName(),
@@ -110,7 +123,7 @@ export class UserRepository extends Repository<User> {
       statement = {
         ...statement,
         ...{
-          _public: statement.admin === 1,
+          admin: statement.admin === 1,
         },
       };
     }

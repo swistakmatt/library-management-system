@@ -1,3 +1,6 @@
+import { DatabaseElement } from '../database/DatabaseElement';
+
+
 export interface MediaMetadata {
   id: number | null;
   title: string;
@@ -7,7 +10,7 @@ export interface MediaMetadata {
   _public: boolean;
 }
 
-export class MediaElement implements Omit<MediaMetadata, 'owner' | '_public'> {
+export class MediaElement implements Omit<MediaMetadata, 'owner' | '_public'>, DatabaseElement {
   public id: number | null = null;
   public title: string;
   public releaseYear: number;
@@ -58,6 +61,10 @@ export class MediaElement implements Omit<MediaMetadata, 'owner' | '_public'> {
 
   public setPath(newPath: string): void {
     this.path = newPath;
+  }
+
+  public getId(): number | null {
+    return this.id;
   }
 
   public getOwner(): string {

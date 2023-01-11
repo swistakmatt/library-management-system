@@ -5,14 +5,7 @@ import { Repository } from './Repository';
 
 
 export class MovieRepository extends Repository<Movie> {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public async getById(id: number) {
-    const db = Database.getConnection();
-
-    const statement = await db.get('SELECT * FROM Movie WHERE id = $id', { $id: id });
-
-    return this.statementToInstance(statement);
-  }
+  protected tableName = 'Movie';
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async set(instance: Movie) {
