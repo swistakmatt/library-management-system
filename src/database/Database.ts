@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from 'fs';
-import { Database as SqliteDb } from 'sqlite3';
-import { AsyncDatabase } from './AsyncDatabase';
+import sqlite from 'sqlite3';
+import { AsyncDatabase } from './AsyncDatabase.js';
 
 
 export class Database {
@@ -9,7 +9,7 @@ export class Database {
   private db: AsyncDatabase;
 
   private constructor() {
-    this.db = new AsyncDatabase(new SqliteDb('db.sqlite', this.handleInitError));
+    this.db = new AsyncDatabase(new sqlite.Database('db.sqlite', this.handleInitError));
   }
 
   public async initTables(): Promise<void> {

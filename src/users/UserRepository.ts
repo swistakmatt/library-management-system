@@ -1,6 +1,6 @@
-import { Repository } from '../media/repositories/Repository';
-import { Database } from '../database/Database';
-import { User, UserConstructor } from './User';
+import { Repository } from '../media/repositories/Repository.js';
+import { Database } from '../database/Database.js';
+import { User, UserConstructor } from './User.js';
 
 
 export class UserRepository extends Repository<User> {

@@ -1,5 +1,5 @@
-import { Album } from '../Album';
-import { Song, SongMetadata } from '../Song';
+import { Album } from '../Album.js';
+import { Song, SongMetadata } from '../Song.js';
 
 export class AlbumBuilder {
   private metadata: SongMetadata;

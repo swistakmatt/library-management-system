@@ -1,4 +1,4 @@
-import { Song, SongMetadata } from './Song';
+import { Song, SongMetadata } from './Song.js';
 
 export class Album {
   private metadata: SongMetadata;

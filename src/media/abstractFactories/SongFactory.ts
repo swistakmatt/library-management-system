@@ -1,6 +1,6 @@
-import { SongBuilder } from '../builders/SongBuilder';
-import { MediaElement } from '../MediaElement';
-import { AbstractMediaFactory } from './AbstractFactory';
+import { SongBuilder } from '../builders/SongBuilder.js';
+import { MediaElement } from '../MediaElement.js';
+import { AbstractMediaFactory } from './AbstractFactory.js';
 
 
 export class SongFactory implements AbstractMediaFactory {

@@ -1,4 +1,4 @@
-import { MediaElement } from './MediaElement';
+import { MediaElement } from './MediaElement.js';
 
 export interface SongMetadata {
   length: number;

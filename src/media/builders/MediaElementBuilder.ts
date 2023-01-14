@@ -1,4 +1,4 @@
-import { MediaElement, MediaMetadata } from '../MediaElement';
+import { MediaElement, MediaMetadata } from '../MediaElement.js';
 
 export class MediaElementBuilder implements MediaMetadata {
   public id: number | null = null;

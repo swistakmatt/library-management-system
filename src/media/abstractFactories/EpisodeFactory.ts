@@ -1,6 +1,6 @@
-import { EpisodeBuilder } from '../builders/EpisodeBuilder';
-import { MediaElement } from '../MediaElement';
-import { AbstractMediaFactory } from './AbstractFactory';
+import { EpisodeBuilder } from '../builders/EpisodeBuilder.js';
+import { MediaElement } from '../MediaElement.js';
+import { AbstractMediaFactory } from './AbstractFactory.js';
 
 
 export class EpisodeFactory implements AbstractMediaFactory {

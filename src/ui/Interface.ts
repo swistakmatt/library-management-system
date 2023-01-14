@@ -1,8 +1,8 @@
-import { Menu } from './Menu';
+import { Menu } from './Menu.js';
 import * as readlineSync from 'readline-sync';
-import { UserContainer } from '../users/UserContainer';
-import { LibraryContainer } from '../media/LibraryContainer';
-import { User } from '../users/User';
+import { UserContainer } from '../users/UserContainer.js';
+import { LibraryContainer } from '../media/LibraryContainer.js';
+import { User } from '../users/User.js';
 
 export class Interface {
   public static app(): void {

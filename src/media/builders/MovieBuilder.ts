@@ -1,5 +1,5 @@
-import { Movie, MovieMetadata } from '../Movie';
-import { MediaElementBuilder } from './MediaElementBuilder';
+import { Movie, MovieMetadata } from '../Movie.js';
+import { MediaElementBuilder } from './MediaElementBuilder.js';
 
 export class MovieBuilder extends MediaElementBuilder {
   private metadata: MovieMetadata;

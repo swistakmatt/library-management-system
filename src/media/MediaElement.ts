@@ -1,4 +1,4 @@
-import { DatabaseElement } from '../database/DatabaseElement';
+import { DatabaseElement } from '../database/DatabaseElement.js';
 
 
 export interface MediaMetadata {

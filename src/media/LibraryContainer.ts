@@ -1,11 +1,11 @@
 /* eslint-disable no-empty */
-import { Album } from './Album';
-import { Song, SongMetadata } from './Song';
-import { Ebook, EbookMetadata } from './Ebook';
-import { Movie, MovieMetadata } from './Movie';
-import { Episode, EpisodeMetadata } from './Episode';
-import { User } from '../users/User';
-import { MediaElement } from './MediaElement';
+import { Album } from './Album.js';
+import { Song, SongMetadata } from './Song.js';
+import { Ebook, EbookMetadata } from './Ebook.js';
+import { Movie, MovieMetadata } from './Movie.js';
+import { Episode, EpisodeMetadata } from './Episode.js';
+import { User } from '../users/User.js';
+import { MediaElement } from './MediaElement.js';
 
 interface MediaMetadata extends MovieMetadata, EpisodeMetadata, SongMetadata, EbookMetadata {}
 

@@ -1,5 +1,5 @@
-import { Database } from './database/Database';
-import { Interface } from './ui/Interface';
+import { Database } from './database/Database.js';
+import { Interface } from './ui/Interface.js';
 
 
 const main = async () => {

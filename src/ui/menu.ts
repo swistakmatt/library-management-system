@@ -1,11 +1,11 @@
-import { User } from '../users/User';
+import { User } from '../users/User.js';
 import * as readlineSync from 'readline-sync';
-import { UserContainer } from '../users/UserContainer';
-import { Ebook } from '../media/Ebook';
-import { Song } from '../media/Song';
-import { Episode } from '../media/Episode';
-import { Movie } from '../media/Movie';
-import { LibraryContainer } from '../media/LibraryContainer';
+import { UserContainer } from '../users/UserContainer.js';
+import { Ebook } from '../media/Ebook.js';
+import { Song } from '../media/Song.js';
+import { Episode } from '../media/Episode.js';
+import { Movie } from '../media/Movie.js';
+import { LibraryContainer } from '../media/LibraryContainer.js';
 
 export class Menu {
   public static registerUser(users: UserContainer): void {

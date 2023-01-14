@@ -1,4 +1,4 @@
-import { User } from './User';
+import { User } from './User.js';
 
 export class UserContainer {
   users: Map<string, User> = new Map();

@@ -1,5 +1,5 @@
-import { Episode, EpisodeMetadata } from '../Episode';
-import { MediaElementBuilder } from './MediaElementBuilder';
+import { Episode, EpisodeMetadata } from '../Episode.js';
+import { MediaElementBuilder } from './MediaElementBuilder.js';
 
 export class EpisodeBuilder extends MediaElementBuilder {
   public metadata: EpisodeMetadata;

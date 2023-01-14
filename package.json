@@ -1,8 +1,12 @@
 {
   "name": "library-management-system",
   "version": "1.0.0",
+  "type": "module",
   "description": "System do zarządzania biblioteką multimediów. Będzie miał możliwość dodawania, usuwania, edycji i przeglądania książek, filmów, muzyki, seriali i innych multimediów. Będzie posiadał wsparcie dla kont użytkowników.",
-  "main": "build/index.js",
+  "main": "./build/index.js",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "npx tsc --watch",
