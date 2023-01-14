@@ -3,6 +3,7 @@ import * as readlineSync from 'readline-sync';
 import { UserContainer } from '../users/UserContainer.js';
 import { LibraryContainer } from '../media/LibraryContainer.js';
 import { User } from '../users/User.js';
+import chalk from 'chalk';
 
 export class Interface {
   public static app(): void {
@@ -17,7 +18,7 @@ export class Interface {
       console.clear();
       Menu.printMenuOptions();
 
-      option = parseInt(readlineSync.question('>'));
+      option = parseInt(readlineSync.question(chalk.green('>')));
 
       switch (option) {
         case 1:
@@ -30,7 +31,9 @@ export class Interface {
           while (activeUser === null) {
             activeUser = Menu.loginUser(users);
           }
-          console.log(`Logged in as [${activeUser.getDisplayName()}]`);
+          console.log(
+            chalk.green(`Zalogowano jako [${activeUser.getDisplayName()}]`)
+          );
           break;
         case 3:
           console.clear();
@@ -94,11 +97,15 @@ export class Interface {
           break;
         case 17:
           console.clear();
-          library.print(activeUser);
+          if (activeUser !== null) {
+            library.print(activeUser);
+          }
           break;
         case 18:
           console.clear();
-          library.printUserMedia(activeUser);
+          if (activeUser !== null) {
+            library.printUserMedia(activeUser);
+          }
           break;
         case 19:
           console.clear();
@@ -149,7 +156,7 @@ export class Interface {
           break;
         default:
           console.clear();
-          console.log('Nie ma takiej opcji!');
+          console.log(chalk.red('Nie ma takiej opcji!'));
           break;
       }
     } while (loop);

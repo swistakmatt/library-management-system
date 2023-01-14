@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { Song, SongMetadata } from './Song.js';
 
 export class Album {
@@ -26,12 +27,25 @@ export class Album {
     this.tracks.push(song);
   }
 
-
   public print(): void {
-    console.log(`Album: ${this.metadata.album} - Wykonawca: ${this.metadata.artist}`);
-    console.log(`Gatunek: ${this.metadata.genre}, Rok: ${this.releaseYear}`);
+    console.log(
+      chalk.yellow(`Album: `) +
+        `${this.metadata.album} - ` +
+        chalk.yellow(`Wykonawca: `) +
+        `${this.metadata.artist}`
+    );
+    console.log(
+      chalk.yellow(`Gatunek: `) +
+        `${this.metadata.genre}, ` +
+        chalk.yellow(`Rok: `) +
+        `${this.releaseYear}`
+    );
     for (const track of this.tracks) {
-      console.log(`   ${track.getMetadata().trackNumber}. ${track.title}(${Song.secondsToMinutes(track.getMetadata().length)})`);
+      console.log(
+        `   ${track.getMetadata().trackNumber}. ${
+          track.title
+        }(${Song.secondsToMinutes(track.getMetadata().length)})`
+      );
     }
   }
 }
