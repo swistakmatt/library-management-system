@@ -1,88 +1,108 @@
+import chalk from 'chalk';
 import { User } from './User.js';
+import { UserRepository } from './UserRepository.js';
 
 export class UserContainer {
-  users: Map<string, User> = new Map();
+  private userRepository: UserRepository = new UserRepository();
 
-  public addUser(username: string, password: string, displayName: string, admin: boolean): void {
-    if (this.users.has(username)) {
+  public async addUser(
+    username: string,
+    password: string,
+    displayName: string,
+    admin: boolean
+  ): Promise<void> {
+    const existingUser = await this.userRepository.getByUsername(username);
+    if (existingUser) {
       throw new Error('Uzytkownik o takiej nazwie juz istnieje!');
     }
 
-    for (const user of this.users.values()) {
-      if (user.getDisplayName() === displayName) {
-        throw new Error('Uzytkownik z taka nazwa wyswietlania juz istnieje!');
-      }
+    const existingDisplayName = await this.userRepository.hasUsername(
+      displayName
+    );
+
+    if (existingDisplayName) {
+      throw new Error('Uzytkownik z taka nazwa wyswietlania juz istnieje!');
     }
 
-    this.users.set(username, new User(username, password, displayName, admin));
-    console.log(`Zarejestrowano uzytkownika [${username}]`);
+    await this.userRepository.set(
+      new User(username, password, displayName, admin)
+    );
+    console.log(chalk.green(`Zarejestrowano uzytkownika `) + `[${username}]`);
   }
 
-  public getUser(username: string): User {
-    const user = this.users.get(username);
-    if (user === undefined) {
+  public async getUser(username: string): Promise<User> {
+    const user = await this.userRepository.getByUsername(username);
+    if (!user) {
       throw new Error(`Uzytkownik o nazwie ${username} nie istnieje`);
     }
     return user;
   }
 
-  public removeUser(user: User, username: string): void {
+  public async removeUser(user: User, username: string): Promise<void> {
     if (user.getUsername() === username) {
       throw new Error('Nie mozna usunac aktywnego uzytkownika!');
     }
 
     if (user.isAdmin() === false) {
-      throw new Error('Brak wymaganych uprawnien do usuniecia tego uzytkownika!');
+      throw new Error(
+        'Brak wymaganych uprawnien do usuniecia tego uzytkownika!'
+      );
     }
 
-    if (!this.users.has(username)) {
+    if (this.userRepository.hasUsername(username) === undefined) {
       throw new Error('Uzytkownik nie istnieje!');
     }
 
-    this.users.delete(username);
+    await this.userRepository.delete(user);
   }
 
-  public setDisplayName(user: User, username: string, displayName: string): void {
+  public async setDisplayName(
+    user: User,
+    username: string,
+    displayName: string
+  ): Promise<void> {
     if (user.getUsername() !== username) {
       if (user.isAdmin() === false) {
-        throw new Error('Brak wymaganych uprawnien do modyfikowania tego uzytkownika!');
+        throw new Error(
+          'Brak wymaganych uprawnien do modyfikowania tego uzytkownika!'
+        );
       }
     }
 
-    if (!this.users.has(username)) {
+    if (this.userRepository.hasUsername(username) === undefined) {
       throw new Error('Uzytkownik nie istnieje!');
     }
 
-    const userToModify = this.users.get(username);
+    const userToModify = await this.userRepository.getByUsername(username);
 
     if (userToModify === undefined) {
       throw new Error('Uzytkownik nie istnieje!');
     }
 
     userToModify.setDisplayName(displayName);
-    this.users.delete(username);
-    this.users.set(username, userToModify);
+    await this.userRepository.update(userToModify);
   }
 
-  public setPassword(user: User, username: string, password: string): void {
+  public async setPassword(user: User, username: string, password: string): Promise<void> {
     if (user.getUsername() !== username) {
       if (user.isAdmin() === false) {
-        throw new Error('Brak wymaganych uprawnien do modyfikowania tego uzytkownika!');
+        throw new Error(
+          'Brak wymaganych uprawnien do modyfikowania tego uzytkownika!'
+        );
       }
     }
 
-    if (!this.users.has(username)) {
+    if (this.userRepository.hasUsername(username) === undefined) {
       throw new Error('Uzytkownik nie istnieje!');
     }
 
-    const userToModify = this.users.get(username);
+    const userToModify = await this.userRepository.getByUsername(username);
 
     if (userToModify === undefined) {
       throw new Error('Uzytkownik nie istnieje!');
     }
 
     userToModify.setPassword(password);
-    this.users.delete(username);
-    this.users.set(username, userToModify);
+    await this.userRepository.update(userToModify);
   }
 }

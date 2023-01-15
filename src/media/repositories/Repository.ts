@@ -1,5 +1,5 @@
-import { Database } from '../../database/Database';
-import { DatabaseElement } from '../../database/DatabaseElement';
+import { Database } from '../../database/Database.js';
+import { DatabaseElement } from '../../database/DatabaseElement.js';
 
 
 export abstract class Repository<T extends DatabaseElement> {
