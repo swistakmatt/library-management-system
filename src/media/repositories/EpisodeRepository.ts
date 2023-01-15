@@ -1,7 +1,7 @@
-import { Database } from '../../database/Database';
-import { Repository } from './Repository';
-import { Episode } from '../Episode';
-import { EpisodeBuilder } from '../builders/EpisodeBuilder';
+import { Database } from '../../database/Database.js';
+import { Repository } from './Repository.js';
+import { Episode } from '../Episode.js';
+import { EpisodeBuilder } from '../builders/EpisodeBuilder.js';
 
 
 export class EpisodeRepository extends Repository<Episode> {

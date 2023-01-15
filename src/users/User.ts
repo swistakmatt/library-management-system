@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { DatabaseElement } from '../database/DatabaseElement.js';
 
 export interface UserConstructor {
@@ -58,14 +59,14 @@ export class User implements DatabaseElement {
 
   public setPassword(newPassword: string): void {
     if (newPassword === this.password) {
-      throw new Error('Nowe haslo jest takie samo jak poprzednie');
+      throw new Error('The new password is the same as the previous one');
     }
     this.password = newPassword;
   }
 
   public setDisplayName(newDisplayName: string): void {
     if (newDisplayName === this.displayName) {
-      throw new Error('Nowa nazwa jest taka sama jak poprzednia');
+      throw new Error('The new name is the same as the previous one');
     }
     this.displayName = newDisplayName;
   }
@@ -75,9 +76,9 @@ export class User implements DatabaseElement {
   }
 
   public print(): void {
-    console.log(`   Nazwa uzytkownika: ${this.username}`);
-    console.log(`   Haslo: ${this.password}`);
-    console.log(`   Nazwa wyswietlana: ${this.displayName}`);
-    console.log(`   Admin: ${this.admin ? 'true' : 'false'}`);
+    console.log(`   ` + chalk.yellow(`Username: `) + `${this.username}`);
+    console.log(`   ` + chalk.yellow(`Password: `) + `${this.password}`);
+    console.log(`   ` + chalk.yellow(`Display name: `) + `${this.displayName}`);
+    console.log(`   ` + chalk.yellow(`Admin: `) + `${this.admin ? 'true' : 'false'}`);
   }
 }

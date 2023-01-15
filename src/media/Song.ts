@@ -26,40 +26,40 @@ export class Song extends MediaElement {
   }
 
   public print(): void {
-    console.log(`   ` + chalk.yellow(`Tytul: `) + `${this.title}`);
-    console.log(`   ` + chalk.yellow(`Rok wydania: `) + `${this.releaseYear}`);
-    console.log(`   ` + chalk.yellow(`Sciezka: `) + `${this.path}`);
-    console.log(`   ` + chalk.yellow(`Wlasciciel: `) + `${this.getOwner()}`);
+    console.log(`   ` + chalk.yellow(`Title: `) + `${this.title}`);
+    console.log(`   ` + chalk.yellow(`Release year: `) + `${this.releaseYear}`);
+    console.log(`   ` + chalk.yellow(`Path: `) + `${this.path}`);
+    console.log(`   ` + chalk.yellow(`Owner: `) + `${this.getOwner()}`);
     console.log(
       `   ` +
-        chalk.yellow(`Publiczny: `) +
+        chalk.yellow(`Public: `) +
         `${this.isPublic() ? 'true' : 'false'}`
     );
 
     console.log(
       `   ` +
-        chalk.yellow(`Dlugosc: `) +
+        chalk.yellow(`Length: `) +
         `${Song.secondsToHours(this.metadata.length)}`
     );
-    console.log(`   ` + chalk.yellow(`Gatunek: `) + `${this.metadata.genre}`);
+    console.log(`   ` + chalk.yellow(`Genre: `) + `${this.metadata.genre}`);
     console.log(
-      `   ` + chalk.yellow(`Data wydania: `) + `${this.metadata.releaseDate}`
+      `   ` + chalk.yellow(`Release date: `) + `${this.metadata.releaseDate}`
     );
 
     console.log(
-      `   ` + chalk.yellow(`Wykonawca: `) + `${this.metadata.artist}`
+      `   ` + chalk.yellow(`Artist: `) + `${this.metadata.artist}`
     );
     console.log(`   ` + chalk.yellow(`Album: `) + `${this.metadata.album}`);
     console.log(
-      `   ` + chalk.yellow(`Numer utworu: `) + `${this.metadata.trackNumber}`
+      `   ` + chalk.yellow(`Track number: `) + `${this.metadata.trackNumber}`
     );
   }
 
   public printLocation(): void {
     console.log(
-      chalk.yellow(`Biblioteka`) +
+      chalk.yellow(`Library`) +
         `[${this.getOwner()}] -> ` +
-        chalk.yellow(`Muzyka `) +
+        chalk.yellow(`Music `) +
         `-> ${this.metadata.artist} 
     -> ${this.metadata.album} -> ${this.metadata.trackNumber} -> ${this.title}`
     );

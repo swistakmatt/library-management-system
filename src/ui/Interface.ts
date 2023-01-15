@@ -32,7 +32,7 @@ export class Interface {
             activeUser = Menu.loginUser(users);
           }
           console.log(
-            chalk.green(`Zalogowano jako [${activeUser.getDisplayName()}]`)
+            chalk.green(`Logged in as [${activeUser.getDisplayName()}]`)
           );
           break;
         case 3:
@@ -136,14 +136,6 @@ export class Interface {
             Menu.printAlbum(activeUser, library);
           }
           break;
-        case 24:
-          library.saveData();
-          users.saveData();
-          break;
-        case 25:
-          library.readData();
-          users.readData();
-          break;
         case 26:
           console.clear();
           if (activeUser !== null) {
@@ -156,7 +148,7 @@ export class Interface {
           break;
         default:
           console.clear();
-          console.log(chalk.red('Nie ma takiej opcji!'));
+          console.log(chalk.red('This option does not exist!'));
           break;
       }
     } while (loop);

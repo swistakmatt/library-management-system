@@ -31,13 +31,13 @@ export class Album {
     console.log(
       chalk.yellow(`Album: `) +
         `${this.metadata.album} - ` +
-        chalk.yellow(`Wykonawca: `) +
+        chalk.yellow(`Artist: `) +
         `${this.metadata.artist}`
     );
     console.log(
-      chalk.yellow(`Gatunek: `) +
+      chalk.yellow(`Genre: `) +
         `${this.metadata.genre}, ` +
-        chalk.yellow(`Rok: `) +
+        chalk.yellow(`Year: `) +
         `${this.releaseYear}`
     );
     for (const track of this.tracks) {

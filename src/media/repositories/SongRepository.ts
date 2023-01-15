@@ -1,7 +1,7 @@
-import { SongBuilder } from '../../media/builders/SongBuilder';
-import { Song } from '../../media/Song';
-import { Database } from '../../database/Database';
-import { Repository } from './Repository';
+import { SongBuilder } from '../../media/builders/SongBuilder.js';
+import { Song } from '../../media/Song.js';
+import { Database } from '../../database/Database.js';
+import { Repository } from './Repository.js';
 
 
 export class SongRepository extends Repository<Song> {

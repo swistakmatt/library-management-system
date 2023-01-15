@@ -12,49 +12,49 @@ export class Menu {
   public static registerUser(users: UserContainer): void {
     let admin: boolean;
 
-    console.log(chalk.yellow('Rejestrowanie nowego uzytkownika'));
+    console.log(chalk.yellow('Registering a new user'));
 
     const username: string = readlineSync.question(
-      chalk.yellow('Nazwa uzytkownika: ')
+      chalk.yellow('Username: ')
     );
 
     const displayName: string = readlineSync.question(
-      chalk.yellow('Nazwa wyswietlana: ')
+      chalk.yellow('Display name: ')
     );
 
-    const password: string = readlineSync.question(chalk.yellow('Haslo: '));
+    const password: string = readlineSync.question(chalk.yellow('Password: '));
 
     const buf: string = readlineSync.question(
-      chalk.yellow('Administrator [T/N]: ')
+      chalk.yellow('Admin [Y/N]: ')
     );
 
-    if (buf === 'T' || buf === 't') {
+    if (buf === 'Y' || buf === 'y') {
       admin = true;
     } else {
       admin = false;
     }
 
-    users.addUser(username, password, displayName, admin);
+    void users.addUser(username, password, displayName, admin);
   }
 
   public static addMovie(activeUser: User, library: LibraryContainer): void {
     let isPublic: boolean;
 
-    console.log(chalk.yellow('Dodawanie nowego filmu'));
+    console.log(chalk.yellow('Adding new movie'));
 
-    const title: string = readlineSync.question(chalk.yellow('Tytul: '));
+    const title: string = readlineSync.question(chalk.yellow('Title: '));
 
     const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Rok wydania: '))
+      readlineSync.question(chalk.yellow('Release year: '))
     );
 
-    const path: string = readlineSync.question(chalk.yellow('Sciezka: '));
+    const path: string = readlineSync.question(chalk.yellow('Path: '));
 
     const buf: string = readlineSync.question(
-      chalk.yellow('Publiczny [T/N]: ')
+      chalk.yellow('Public [Y/N]: ')
     );
 
-    if (buf === 'T' || buf === 't') {
+    if (buf === 'Y' || buf === 'y') {
       isPublic = true;
     } else {
       isPublic = false;
@@ -66,21 +66,21 @@ export class Menu {
   public static addEpisode(activeUser: User, library: LibraryContainer): void {
     let isPublic: boolean;
 
-    console.log(chalk.yellow('Dodawanie nowego epizodu'));
+    console.log(chalk.yellow('Adding new episode'));
 
-    const title: string = readlineSync.question(chalk.yellow('Tytul: '));
+    const title: string = readlineSync.question(chalk.yellow('Title: '));
 
     const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Rok wydania: '))
+      readlineSync.question(chalk.yellow('Release year: '))
     );
 
-    const path: string = readlineSync.question(chalk.yellow('Sciezka: '));
+    const path: string = readlineSync.question(chalk.yellow('Path: '));
 
     const buf: string = readlineSync.question(
-      chalk.yellow('Publiczny [T/N]: ')
+      chalk.yellow('Public [Y/N]: ')
     );
 
-    if (buf === 'T' || buf === 't') {
+    if (buf === 'Y' || buf === 'y') {
       isPublic = true;
     } else {
       isPublic = false;
@@ -92,21 +92,21 @@ export class Menu {
   public static addSong(activeUser: User, library: LibraryContainer): void {
     let isPublic: boolean;
 
-    console.log(chalk.yellow('Dodawanie nowego utworu'));
+    console.log(chalk.yellow('Adding new song'));
 
-    const title: string = readlineSync.question(chalk.yellow('Tytul: '));
+    const title: string = readlineSync.question(chalk.yellow('Title: '));
 
     const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Rok wydania: '))
+      readlineSync.question(chalk.yellow('Release year: '))
     );
 
-    const path: string = readlineSync.question(chalk.yellow('Sciezka: '));
+    const path: string = readlineSync.question(chalk.yellow('Path: '));
 
     const buf: string = readlineSync.question(
-      chalk.yellow('Publiczny [T/N]: ')
+      chalk.yellow('Public [Y/N]: ')
     );
 
-    if (buf === 'T' || buf === 't') {
+    if (buf === 'Y' || buf === 'y') {
       isPublic = true;
     } else {
       isPublic = false;
@@ -118,21 +118,21 @@ export class Menu {
   public static addEbook(activeUser: User, library: LibraryContainer): void {
     let isPublic: boolean;
 
-    console.log(chalk.yellow('Dodawanie nowego ebooka'));
+    console.log(chalk.yellow('Adding new ebook'));
 
-    const title: string = readlineSync.question(chalk.yellow('Tytul: '));
+    const title: string = readlineSync.question(chalk.yellow('Title: '));
 
     const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Rok wydania: '))
+      readlineSync.question(chalk.yellow('Release year: '))
     );
 
-    const path: string = readlineSync.question(chalk.yellow('Sciezka: '));
+    const path: string = readlineSync.question(chalk.yellow('Path: '));
 
     const buf: string = readlineSync.question(
-      chalk.yellow('Publiczny [T/N]: ')
+      chalk.yellow('Public [Y/N]: ')
     );
 
-    if (buf === 'T' || buf === 't') {
+    if (buf === 'Y' || buf === 'y') {
       isPublic = true;
     } else {
       isPublic = false;
@@ -142,12 +142,12 @@ export class Menu {
   }
 
   public static removeMovie(activeUser: User, library: LibraryContainer): void {
-    console.log(chalk.yellow('Usuwanie filmu'));
+    console.log(chalk.yellow('Removing movie'));
 
-    const title: string = readlineSync.question(chalk.yellow('Tytul: '));
+    const title: string = readlineSync.question(chalk.yellow('Title: '));
 
     const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Rok wydania: '))
+      readlineSync.question(chalk.yellow('Release year: '))
     );
 
     library.removeMedia(activeUser, library.getMovies(), title, releaseYear);
@@ -157,48 +157,48 @@ export class Menu {
     activeUser: User,
     library: LibraryContainer
   ): void {
-    console.log(chalk.yellow('Usuwanie epizodu'));
+    console.log(chalk.yellow('Removing episode'));
 
-    const title: string = readlineSync.question(chalk.yellow('Tytul: '));
+    const title: string = readlineSync.question(chalk.yellow('Title: '));
 
     const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Rok wydania: '))
+      readlineSync.question(chalk.yellow('Release year: '))
     );
 
     library.removeMedia(activeUser, library.getEpisodes(), title, releaseYear);
   }
 
   public static removeSong(activeUser: User, library: LibraryContainer): void {
-    console.log(chalk.yellow('Usuwanie utworu'));
+    console.log(chalk.yellow('Removing song'));
 
-    const title: string = readlineSync.question(chalk.yellow('Tytul: '));
+    const title: string = readlineSync.question(chalk.yellow('Title: '));
 
     const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Rok wydania: '))
+      readlineSync.question(chalk.yellow('Release year: '))
     );
 
     library.removeMedia(activeUser, library.getSongs(), title, releaseYear);
   }
 
   public static removeEbook(activeUser: User, library: LibraryContainer): void {
-    console.log(chalk.yellow('Usuwanie ebooka'));
+    console.log(chalk.yellow('Removing ebook'));
 
-    const title: string = readlineSync.question(chalk.yellow('Tytul: '));
+    const title: string = readlineSync.question(chalk.yellow('Title: '));
 
     const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Rok wydania: '))
+      readlineSync.question(chalk.yellow('Release year: '))
     );
 
     library.removeMedia(activeUser, library.getEbooks(), title, releaseYear);
   }
 
   public static printAlbum(activeUser: User, library: LibraryContainer): void {
-    console.log(chalk.yellow('Wyswietlanie albumu utworu'));
+    console.log(chalk.yellow('Printing album'));
 
-    const title: string = readlineSync.question(chalk.yellow('Tytul: '));
+    const title: string = readlineSync.question(chalk.yellow('Title: '));
 
     const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Rok wydania: '))
+      readlineSync.question(chalk.yellow('Release year: '))
     );
 
     const media = library.getMedia(
@@ -211,12 +211,12 @@ export class Menu {
   }
 
   public static printMovie(activeUser: User, library: LibraryContainer): void {
-    console.log(chalk.yellow('Wyswietlanie informacji o filmie'));
+    console.log(chalk.yellow('Printing information about movie'));
 
-    const title: string = readlineSync.question(chalk.yellow('Tytul: '));
+    const title: string = readlineSync.question(chalk.yellow('Title: '));
 
     const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Rok wydania: '))
+      readlineSync.question(chalk.yellow('Release year: '))
     );
 
     const media = library.getMedia(
@@ -232,12 +232,12 @@ export class Menu {
     activeUser: User,
     library: LibraryContainer
   ): void {
-    console.log(chalk.yellow('Wyswietlanie informacji o epizodzie'));
+    console.log(chalk.yellow('Printing information about episode'));
 
-    const title: string = readlineSync.question(chalk.yellow('Tytul: '));
+    const title: string = readlineSync.question(chalk.yellow('Title: '));
 
     const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Rok wydania: '))
+      readlineSync.question(chalk.yellow('Release year: '))
     );
 
     const media = library.getMedia(
@@ -250,12 +250,12 @@ export class Menu {
   }
 
   public static printSong(activeUser: User, library: LibraryContainer): void {
-    console.log(chalk.yellow('Wyswietlanie informacji o utworze'));
+    console.log(chalk.yellow('Printing information about song'));
 
-    const title: string = readlineSync.question(chalk.yellow('Tytul: '));
+    const title: string = readlineSync.question(chalk.yellow('Title: '));
 
     const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Rok wydania: '))
+      readlineSync.question(chalk.yellow('Release year: '))
     );
 
     const media = library.getMedia(
@@ -268,12 +268,12 @@ export class Menu {
   }
 
   public static printEbook(activeUser: User, library: LibraryContainer): void {
-    console.log(chalk.yellow('Wyswietlanie informacji o ebooku'));
+    console.log(chalk.yellow('Printing information about ebook'));
 
-    const title: string = readlineSync.question(chalk.yellow('Tytul: '));
+    const title: string = readlineSync.question(chalk.yellow('Title: '));
 
     const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Rok wydania: '))
+      readlineSync.question(chalk.yellow('Release year: '))
     );
 
     const media = library.getMedia(
@@ -286,23 +286,23 @@ export class Menu {
   }
 
   public static changeDisplayname(activeUser: User): void {
-    console.log(chalk.yellow('Zmiana nazwy wyswietlania uzytkownika'));
+    console.log(chalk.yellow('Changing display name'));
 
     const displayName: string = readlineSync.question(
-      chalk.yellow('Nazwa wyswietlania: ')
+      chalk.yellow('Display name: ')
     );
 
     activeUser.setDisplayName(displayName);
   }
 
   public static loginUser(users: UserContainer): User {
-    console.log(chalk.yellow('Logowanie'));
+    console.log(chalk.yellow('Logging in'));
 
     const username: string = readlineSync.question(
-      chalk.yellow('Nazwa uzytkownika: ')
+      chalk.yellow('Username: ')
     );
 
-    const password: string = readlineSync.question(chalk.yellow('Haslo: '));
+    const password: string = readlineSync.question(chalk.yellow('Password: '));
 
     return users.getUser(username, password);
   }
@@ -310,10 +310,10 @@ export class Menu {
   public static changeAdmin(activeUser: User): void {
     let admin: boolean;
 
-    console.log(chalk.yellow('Zmien uprawnienia uzytkownika'));
+    console.log(chalk.yellow('Changing user permissions'));
 
     const buf: string = readlineSync.question(
-      chalk.yellow('Administrator [Y/N]: ')
+      chalk.yellow('Admin [Y/N]: ')
     );
 
     if (buf === 'Y' || buf === 'y') {
@@ -326,63 +326,59 @@ export class Menu {
   }
 
   public static printMenuOptions(): void {
-    console.log(chalk.yellow('Menu programu'));
+    console.log(chalk.yellow('Menu options'));
 
     console.log(
       chalk.yellow('1. ') +
-        'Dodaj uzytkownika\n' +
+        'Add user\n' +
         chalk.yellow('2. ') +
-        'Zaloguj uzytkownika\n' +
+        'Log in\n' +
         chalk.yellow('3. ') +
-        'Zmien nazwe wyswietlania\n' +
+        'Change display name\n' +
         chalk.yellow('4. ') +
-        'Zmien prawa administratora\n\n' +
+        'Change user permissions\n\n' +
         chalk.yellow('5. ') +
-        'Dodaj film\n' +
+        'Add movie\n' +
         chalk.yellow('6. ') +
-        'Dodaj epizod\n' +
+        'Add episode\n' +
         chalk.yellow('7. ') +
-        'Dodaj utwor\n' +
+        'Add song\n' +
         chalk.yellow('8. ') +
-        'Dodaj ebook\n\n' +
+        'Add ebook\n\n' +
         chalk.yellow('9. ') +
-        'Modyfikuj film\n' +
+        'Modify movie\n' +
         chalk.yellow('10. ') +
-        'Modyfikuj epizod\n' +
+        'Modify episode\n' +
         chalk.yellow('11. ') +
-        'Modyfikuj utwor\n' +
+        'Modify song\n' +
         chalk.yellow('12. ') +
-        'Modyfikuj ebook\n\n' +
+        'Modify ebook\n\n' +
         chalk.yellow('13. ') +
-        'Usun film\n' +
+        'Remove movie\n' +
         chalk.yellow('14. ') +
-        'Usun epizod\n' +
+        'Remove episode\n' +
         chalk.yellow('15. ') +
-        'Usun utwor\n' +
+        'Remove song\n' +
         chalk.yellow('16. ') +
-        'Usun ebook\n\n' +
+        'Remove ebook\n\n' +
         chalk.yellow('17. ') +
-        'Wyswietl zawartosc biblioteki\n' +
+        'Print content of the library\n' +
         chalk.yellow('18. ') +
-        'Wyswietl zasoby uzytkownika\n\n' +
+        'Print user resources\n\n' +
         chalk.yellow('19. ') +
-        'Wyswietl informacje o filmie\n' +
+        'Print video informations\n' +
         chalk.yellow('20. ') +
-        'Wyswietl informacje o epizodzie\n' +
+        'Print episode informations\n' +
         chalk.yellow('21. ') +
-        'Wyswiel informacje o utworze\n' +
+        'Print song informations\n' +
         chalk.yellow('22. ') +
-        'Wyswietl informacje o ebooku\n\n' +
+        'Print ebook informations\n\n' +
         chalk.yellow('23. ') +
-        'Wyswietl album utworu\n\n' +
-        chalk.yellow('24. ') +
-        'Zapisz dane\n' +
-        chalk.yellow('25. ') +
-        'Wczytaj dane\n\n' +
+        'Print song album\n\n' +
         chalk.yellow('26. ') +
-        'Wyswietl informacje o aktywnym uzytkowniku\n\n' +
+        'Print informations about the active user\n\n' +
         chalk.red('0. ') +
-        'Zakoncz program\n'
+        'End program\n'
     );
   }
 }

@@ -24,27 +24,27 @@ export class Movie extends MediaElement {
   }
 
   public print(): void {
-    console.log(`   ` + chalk.yellow(`Tytul: `) + `${this.title}`);
-    console.log(`   ` + chalk.yellow(`Rok wydania: `) + `${this.releaseYear}`);
-    console.log(`   ` + chalk.yellow(`Sciezka: `) + `${this.path}`);
-    console.log(`   ` + chalk.yellow(`Wlasciciel: `) + `${this.getOwner()}`);
+    console.log(`   ` + chalk.yellow(`Title: `) + `${this.title}`);
+    console.log(`   ` + chalk.yellow(`Release year: `) + `${this.releaseYear}`);
+    console.log(`   ` + chalk.yellow(`Path: `) + `${this.path}`);
+    console.log(`   ` + chalk.yellow(`Owner: `) + `${this.getOwner()}`);
     console.log(
       `   ` +
-        chalk.yellow(`Publiczny: `) +
+        chalk.yellow(`Public: `) +
         `${this.isPublic() ? 'true' : 'false'}`
     );
 
     console.log(
       `   ` +
-        chalk.yellow(`Dlugosc: `) +
+        chalk.yellow(`Length: `) +
         `${Movie.secondsToHours(this.metadata.length)}`
     );
-    console.log(`   ` + chalk.yellow(`Gatunek: `) + `${this.metadata.genre}`);
+    console.log(`   ` + chalk.yellow(`Genre: `) + `${this.metadata.genre}`);
     console.log(
-      `   ` + chalk.yellow(`Data wydania: `) + `${this.metadata.releaseDate}`
+      `   ` + chalk.yellow(`Release date: `) + `${this.metadata.releaseDate}`
     );
 
-    console.log(`   ` + chalk.yellow(`Obsada:`));
+    console.log(`   ` + chalk.yellow(`Cast:`));
     for (const [actor, role] of Object.entries(this.metadata.cast)) {
       console.log(`      ${actor}: ${role}`);
     }
@@ -52,9 +52,9 @@ export class Movie extends MediaElement {
 
   public printLocation(): void {
     console.log(
-      chalk.yellow(`Biblioteka`) +
+      chalk.yellow(`Library`) +
         `[${this.getOwner()}] -> ` +
-        chalk.yellow(`Filmy `) +
+        chalk.yellow(`Movies `) +
         `-> ${this.title}(${this.releaseYear})`
     );
   }

@@ -1,7 +1,7 @@
-import { Database } from '../../database/Database';
-import { Repository } from './Repository';
-import { Ebook } from '../Ebook';
-import { EbookBuilder } from '../builders/EbookBuilder';
+import { Database } from '../../database/Database.js';
+import { Repository } from './Repository.js';
+import { Ebook } from '../Ebook.js';
+import { EbookBuilder } from '../builders/EbookBuilder.js';
 
 
 export class EbookRepository extends Repository<Ebook> {

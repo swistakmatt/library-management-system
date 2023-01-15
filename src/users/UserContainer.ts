@@ -13,7 +13,7 @@ export class UserContainer {
   ): Promise<void> {
     const existingUser = await this.userRepository.getByUsername(username);
     if (existingUser) {
-      throw new Error('Uzytkownik o takiej nazwie juz istnieje!');
+      throw new Error('A user with that name already exists!');
     }
 
     const existingDisplayName = await this.userRepository.hasUsername(
@@ -21,36 +21,36 @@ export class UserContainer {
     );
 
     if (existingDisplayName) {
-      throw new Error('Uzytkownik z taka nazwa wyswietlania juz istnieje!');
+      throw new Error('A user with this display name already exists!');
     }
 
     await this.userRepository.set(
       new User(username, password, displayName, admin)
     );
-    console.log(chalk.green(`Zarejestrowano uzytkownika `) + `[${username}]`);
+    console.log(chalk.green(`User registered `) + `[${username}]`);
   }
 
   public async getUser(username: string): Promise<User> {
     const user = await this.userRepository.getByUsername(username);
     if (!user) {
-      throw new Error(`Uzytkownik o nazwie ${username} nie istnieje`);
+      throw new Error(`User named ${username} does not exist`);
     }
     return user;
   }
 
   public async removeUser(user: User, username: string): Promise<void> {
     if (user.getUsername() === username) {
-      throw new Error('Nie mozna usunac aktywnego uzytkownika!');
+      throw new Error('Cannot delete active user!');
     }
 
     if (user.isAdmin() === false) {
       throw new Error(
-        'Brak wymaganych uprawnien do usuniecia tego uzytkownika!'
+        'You do not have the required permissions to delete this user!'
       );
     }
 
     if (this.userRepository.hasUsername(username) === undefined) {
-      throw new Error('Uzytkownik nie istnieje!');
+      throw new Error('User does not exist!');
     }
 
     await this.userRepository.delete(user);
@@ -64,19 +64,19 @@ export class UserContainer {
     if (user.getUsername() !== username) {
       if (user.isAdmin() === false) {
         throw new Error(
-          'Brak wymaganych uprawnien do modyfikowania tego uzytkownika!'
+          'You do not have the required permissions to modify this user!'
         );
       }
     }
 
     if (this.userRepository.hasUsername(username) === undefined) {
-      throw new Error('Uzytkownik nie istnieje!');
+      throw new Error('User does not exist!');
     }
 
     const userToModify = await this.userRepository.getByUsername(username);
 
     if (userToModify === undefined) {
-      throw new Error('Uzytkownik nie istnieje!');
+      throw new Error('User does not exist!');
     }
 
     userToModify.setDisplayName(displayName);
@@ -87,19 +87,19 @@ export class UserContainer {
     if (user.getUsername() !== username) {
       if (user.isAdmin() === false) {
         throw new Error(
-          'Brak wymaganych uprawnien do modyfikowania tego uzytkownika!'
+          'You do not have the required permissions to modify this user!'
         );
       }
     }
 
     if (this.userRepository.hasUsername(username) === undefined) {
-      throw new Error('Uzytkownik nie istnieje!');
+      throw new Error('User does not exist!');
     }
 
     const userToModify = await this.userRepository.getByUsername(username);
 
     if (userToModify === undefined) {
-      throw new Error('Uzytkownik nie istnieje!');
+      throw new Error('User does not exist!');
     }
 
     userToModify.setPassword(password);

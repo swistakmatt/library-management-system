@@ -29,34 +29,34 @@ export class Episode extends MediaElement {
   }
 
   public print(): void {
-    console.log(`   ` + chalk.yellow(`Tytul: `) + `${this.title}`);
-    console.log(`   ` + chalk.yellow(`Rok wydania: `) + `${this.releaseYear}`);
-    console.log(`   ` + chalk.yellow(`Sciezka: `) + `${this.path}`);
-    console.log(`   ` + chalk.yellow(`Wlasciciel: `) + `${this.getOwner()}`);
+    console.log(`   ` + chalk.yellow(`Title: `) + `${this.title}`);
+    console.log(`   ` + chalk.yellow(`Release year: `) + `${this.releaseYear}`);
+    console.log(`   ` + chalk.yellow(`Path: `) + `${this.path}`);
+    console.log(`   ` + chalk.yellow(`Owner: `) + `${this.getOwner()}`);
     console.log(
       `   ` +
-        chalk.yellow(`Publiczny: `) +
+        chalk.yellow(`Public: `) +
         `${this.isPublic() ? 'true' : 'false'}`
     );
     console.log(
       `   ` +
-        chalk.yellow(`Dlugosc: `) +
+        chalk.yellow(`Length: `) +
         `${Episode.secondsToHours(this.metadata.length)}`
     );
-    console.log(`   ` + chalk.yellow(`Gatunek: `) + `${this.metadata.genre}`);
+    console.log(`   ` + chalk.yellow(`Genre: `) + `${this.metadata.genre}`);
     console.log(
-      `   ` + chalk.yellow(`Data wydania: `) + `${this.metadata.releaseDate}`
+      `   ` + chalk.yellow(`Release date: `) + `${this.metadata.releaseDate}`
     );
     console.log(
-      `   ` + chalk.yellow(`Nazwa serialu: `) + `${this.metadata.series}`
+      `   ` + chalk.yellow(`Series name: `) + `${this.metadata.series}`
     );
     console.log(
-      `   ` + chalk.yellow(`Numer odcinka: `) + `${this.metadata.episodeNumber}`
+      `   ` + chalk.yellow(`Episode number: `) + `${this.metadata.episodeNumber}`
     );
     console.log(
-      `   ` + chalk.yellow(`Numer sezonu: `) + `${this.metadata.seasonNumber}`
+      `   ` + chalk.yellow(`Season number: `) + `${this.metadata.seasonNumber}`
     );
-    console.log('   ' + chalk.yellow('Obsada: '));
+    console.log('   ' + chalk.yellow('Cast: '));
     for (const [actor, role] of Object.entries(this.metadata.cast)) {
       console.log(`      ${actor}: ${role}`);
     }
@@ -64,14 +64,14 @@ export class Episode extends MediaElement {
 
   public printLocation(): void {
     console.log(
-      chalk.yellow(`Biblioteka`) +
+      chalk.yellow(`Library`) +
         `[${this.getOwner()}] -> ` +
-        chalk.yellow(`Seriale `) +
+        chalk.yellow(`Series `) +
         `-> ${this.metadata.series} 
     -> ` +
-        chalk.yellow(`Sezon `) +
+        chalk.yellow(`Season `) +
         `${this.metadata.seasonNumber} -> ` +
-        chalk.yellow(`Epizod `) +
+        chalk.yellow(`Episode `) +
         `${this.metadata.episodeNumber} -> ${this.title}(${this.releaseYear})`
     );
   }

@@ -24,32 +24,32 @@ export class Ebook extends MediaElement {
   }
 
   public print(): void {
-    console.log(`   ` + chalk.yellow(`Tytul: `) + `${this.title}`);
-    console.log(`   ` + chalk.yellow(`Rok wydania: `) + `${this.releaseYear}`);
-    console.log(`   ` + chalk.yellow(`Sciezka: `) + `${this.path}`);
-    console.log(`   ` + chalk.yellow(`Wlasciciel: `) + `${this.getOwner()}`);
+    console.log(`   ` + chalk.yellow(`Title: `) + `${this.title}`);
+    console.log(`   ` + chalk.yellow(`Release year: `) + `${this.releaseYear}`);
+    console.log(`   ` + chalk.yellow(`Path: `) + `${this.path}`);
+    console.log(`   ` + chalk.yellow(`Owner: `) + `${this.getOwner()}`);
     console.log(
       `   ` +
-        chalk.yellow(`Publiczny: `) +
+        chalk.yellow(`Public: `) +
         `${this.isPublic() ? 'true' : 'false'}`
     );
 
     console.log(
-      `   ` + chalk.yellow(`Ilosc stron: `) + `${this.metadata.numberOfPages}`
+      `   ` + chalk.yellow(`Number of pages: `) + `${this.metadata.numberOfPages}`
     );
-    console.log(`   ` + chalk.yellow(`Gatunek: `) + `${this.metadata.genre}`);
+    console.log(`   ` + chalk.yellow(`Genre: `) + `${this.metadata.genre}`);
     console.log(
-      `   ` + chalk.yellow(`Data wydania: `) + `${this.metadata.releaseDate}`
+      `   ` + chalk.yellow(`Release date: `) + `${this.metadata.releaseDate}`
     );
 
-    console.log(`   ` + chalk.yellow(`Autor: `) + `${this.metadata.author}`);
+    console.log(`   ` + chalk.yellow(`Author: `) + `${this.metadata.author}`);
   }
 
   public printLocation(): void {
     console.log(
-      chalk.yellow(`Biblioteka`) +
+      chalk.yellow(`Library`) +
         `[${this.getOwner()}] -> ` +
-        chalk.yellow(`Ebooki `) +
+        chalk.yellow(`Ebooks `) +
         `-> ${this.metadata.author} -> ${this.title}`
     );
   }
