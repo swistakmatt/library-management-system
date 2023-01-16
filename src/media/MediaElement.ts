@@ -1,6 +1,5 @@
 import { DatabaseElement } from '../database/DatabaseElement.js';
 
-
 export interface MediaMetadata {
   id: number | null;
   title: string;
@@ -10,7 +9,7 @@ export interface MediaMetadata {
   _public: boolean;
 }
 
-export class MediaElement implements Omit<MediaMetadata, 'owner' | '_public'>, DatabaseElement {
+export abstract class MediaElement implements Omit<MediaMetadata, 'owner' | '_public'>, DatabaseElement {
   public id: number | null = null;
   public title: string;
   public releaseYear: number;
@@ -34,7 +33,9 @@ export class MediaElement implements Omit<MediaMetadata, 'owner' | '_public'>, D
   }
 
   public static secondsToMinutes(length: number): string {
-    const minutes = Math.floor(length / 60).toString().padStart(2, '0');
+    const minutes = Math.floor(length / 60)
+      .toString()
+      .padStart(2, '0');
     const seconds = (length % 60).toString().padStart(2, '0');
     return `${minutes}:${seconds}`;
   }
@@ -77,13 +78,28 @@ export class MediaElement implements Omit<MediaMetadata, 'owner' | '_public'>, D
 
   public static isMediaMetadata(obj: unknown): obj is MediaMetadata & { id: number } {
     return (
-      obj !== null && typeof obj === 'object' &&
-      'id' in obj && typeof obj.id === 'number' &&
-      'title' in obj && typeof obj.title === 'string' &&
-      'releaseYear' in obj && typeof obj.releaseYear === 'number' &&
-      'path' in obj && typeof obj.path === 'string' &&
-      'owner' in obj && typeof obj.owner === 'string' &&
-      '_public' in obj && typeof obj._public === 'boolean'
+      obj !== null &&
+      typeof obj === 'object' &&
+      'id' in obj &&
+      typeof obj.id === 'number' &&
+      'title' in obj &&
+      typeof obj.title === 'string' &&
+      'releaseYear' in obj &&
+      typeof obj.releaseYear === 'number' &&
+      'path' in obj &&
+      typeof obj.path === 'string' &&
+      'owner' in obj &&
+      typeof obj.owner === 'string' &&
+      '_public' in obj &&
+      typeof obj._public === 'boolean'
     );
+  }
+
+  public abstract print(): void;
+
+  public abstract printLocation(): void;
+
+  public setMetadata(metadata: unknown): void {
+    throw new Error('Method not implemented.');
   }
 }

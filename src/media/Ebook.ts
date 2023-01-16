@@ -11,14 +11,7 @@ export interface EbookMetadata {
 export class Ebook extends MediaElement {
   public metadata: EbookMetadata;
 
-  constructor(
-    title: string,
-    releaseYear: number,
-    path: string,
-    owner: string,
-    _public: boolean,
-    metadata: EbookMetadata
-  ) {
+  constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: EbookMetadata) {
     super(title, releaseYear, path, owner, _public);
     this.metadata = metadata;
   }
@@ -28,30 +21,23 @@ export class Ebook extends MediaElement {
     console.log(`   ` + chalk.yellow(`Release year: `) + `${this.releaseYear}`);
     console.log(`   ` + chalk.yellow(`Path: `) + `${this.path}`);
     console.log(`   ` + chalk.yellow(`Owner: `) + `${this.getOwner()}`);
-    console.log(
-      `   ` +
-        chalk.yellow(`Public: `) +
-        `${this.isPublic() ? 'true' : 'false'}`
-    );
+    console.log(`   ` + chalk.yellow(`Public: `) + `${this.isPublic() ? 'true' : 'false'}`);
 
-    console.log(
-      `   ` + chalk.yellow(`Number of pages: `) + `${this.metadata.numberOfPages}`
-    );
+    console.log(`   ` + chalk.yellow(`Number of pages: `) + `${this.metadata.numberOfPages}`);
     console.log(`   ` + chalk.yellow(`Genre: `) + `${this.metadata.genre}`);
-    console.log(
-      `   ` + chalk.yellow(`Release date: `) + `${this.metadata.releaseDate}`
-    );
+    console.log(`   ` + chalk.yellow(`Release date: `) + `${this.metadata.releaseDate}`);
 
     console.log(`   ` + chalk.yellow(`Author: `) + `${this.metadata.author}`);
   }
 
   public printLocation(): void {
     console.log(
-      chalk.yellow(`Library`) +
-        `[${this.getOwner()}] -> ` +
-        chalk.yellow(`Ebooks `) +
-        `-> ${this.metadata.author} -> ${this.title}`
+      chalk.yellow(`Library`) + `[${this.getOwner()}] -> ` + chalk.yellow(`Ebooks `) + `-> ${this.metadata.author} -> ${this.title}`,
     );
+  }
+
+  public setMetadata(metadata: EbookMetadata): void {
+    this.metadata = metadata;
   }
 
   public getMetadata(): EbookMetadata {

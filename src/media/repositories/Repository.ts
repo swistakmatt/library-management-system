@@ -2,7 +2,16 @@ import { Database } from '../../database/Database.js';
 import { DatabaseElement } from '../../database/DatabaseElement.js';
 
 
-export abstract class Repository<T extends DatabaseElement> {
+export interface RepositoryInterface<T extends DatabaseElement> extends AsyncIterable<T> {
+  getById(id: number): Promise<T>;
+  getAll(): Promise<T[]>;
+  hasId(id: number): Promise<boolean>;
+  set(instance: T): Promise<number>;
+  update(element: T): Promise<void>;
+  delete(element: T): Promise<void>;
+}
+
+export abstract class Repository<T extends DatabaseElement> implements RepositoryInterface<T> {
   protected abstract tableName: string;
 
   protected statementContainsId(statement: unknown): statement is { id: number } {
@@ -57,6 +66,12 @@ export abstract class Repository<T extends DatabaseElement> {
     await db.run(`DELETE FROM ${this.tableName} WHERE id = $id`, {
       $id: id,
     });
+  }
+
+  public async *[Symbol.asyncIterator](): AsyncIterator<T> {
+    const entries = await this.getAll();
+
+    yield* entries;
   }
 
   protected abstract statementToInstance(statement: unknown): T;

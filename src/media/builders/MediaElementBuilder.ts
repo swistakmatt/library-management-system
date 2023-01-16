@@ -78,10 +78,7 @@ export class MediaElementBuilder implements MediaMetadata {
     }
   }
 
-  public build(): MediaElement {
-    const mediaElement = new MediaElement(this.title, this.releaseYear, this.path, this.owner, this._public);
-    this.softForceId(mediaElement);
-
-    return mediaElement;
+  public build(): void {
+    throw new Error('You can\'t build a MediaElement directly. Please use a subclass instead.')
   }
 }

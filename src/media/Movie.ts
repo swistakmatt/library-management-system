@@ -11,14 +11,7 @@ export interface MovieMetadata {
 export class Movie extends MediaElement {
   public metadata: MovieMetadata;
 
-  constructor(
-    title: string,
-    releaseYear: number,
-    path: string,
-    owner: string,
-    _public: boolean,
-    metadata: MovieMetadata
-  ) {
+  constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: MovieMetadata) {
     super(title, releaseYear, path, owner, _public);
     this.metadata = metadata;
   }
@@ -28,21 +21,11 @@ export class Movie extends MediaElement {
     console.log(`   ` + chalk.yellow(`Release year: `) + `${this.releaseYear}`);
     console.log(`   ` + chalk.yellow(`Path: `) + `${this.path}`);
     console.log(`   ` + chalk.yellow(`Owner: `) + `${this.getOwner()}`);
-    console.log(
-      `   ` +
-        chalk.yellow(`Public: `) +
-        `${this.isPublic() ? 'true' : 'false'}`
-    );
+    console.log(`   ` + chalk.yellow(`Public: `) + `${this.isPublic() ? 'true' : 'false'}`);
 
-    console.log(
-      `   ` +
-        chalk.yellow(`Length: `) +
-        `${Movie.secondsToHours(this.metadata.length)}`
-    );
+    console.log(`   ` + chalk.yellow(`Length: `) + `${Movie.secondsToHours(this.metadata.length)}`);
     console.log(`   ` + chalk.yellow(`Genre: `) + `${this.metadata.genre}`);
-    console.log(
-      `   ` + chalk.yellow(`Release date: `) + `${this.metadata.releaseDate}`
-    );
+    console.log(`   ` + chalk.yellow(`Release date: `) + `${this.metadata.releaseDate}`);
 
     console.log(`   ` + chalk.yellow(`Cast:`));
     for (const [actor, role] of Object.entries(this.metadata.cast)) {
@@ -51,12 +34,11 @@ export class Movie extends MediaElement {
   }
 
   public printLocation(): void {
-    console.log(
-      chalk.yellow(`Library`) +
-        `[${this.getOwner()}] -> ` +
-        chalk.yellow(`Movies `) +
-        `-> ${this.title}(${this.releaseYear})`
-    );
+    console.log(chalk.yellow(`Library`) + `[${this.getOwner()}] -> ` + chalk.yellow(`Movies `) + `-> ${this.title}(${this.releaseYear})`);
+  }
+
+  public setMetadata(metadata: MovieMetadata): void {
+    this.metadata = metadata;
   }
 
   public getMetadata(): MovieMetadata {

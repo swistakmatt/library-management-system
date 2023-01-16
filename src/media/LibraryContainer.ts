@@ -7,29 +7,49 @@ import { Episode, EpisodeMetadata } from './Episode.js';
 import { User } from '../users/User.js';
 import { MediaElement } from './MediaElement.js';
 import chalk from 'chalk';
+import { MediaRepositoryProxy } from './repositories/MediaRepositoryProxy.js';
+import { MovieRepository } from './repositories/MovieRepository.js';
+import { SongRepository } from './repositories/SongRepository.js';
+import { EbookRepository } from './repositories/EbookRepository.js';
+import { EpisodeRepository } from './repositories/EpisodeRepository.js';
+import { RepositoryInterface } from './repositories/Repository.js';
 
-interface MediaMetadata
-  extends MovieMetadata,
-    EpisodeMetadata,
-    SongMetadata,
-    EbookMetadata {}
+type UnionKeys<T> = T extends T ? keyof T : never;
+
+type Expand<T> = T extends T ? { [K in keyof T]: T[K] } : never;
+
+type OneOf<T extends unknown[]> = {
+  [K in keyof T]: Expand<T[K] & Partial<Record<Exclude<UnionKeys<T[number]>, keyof T[K]>, never>>>;
+}[number];
+
+type MediaMetadata = OneOf<[MovieMetadata, EpisodeMetadata, SongMetadata, EbookMetadata]>;
+
+type AddMedia<T extends MediaMetadata = MediaMetadata> = (
+  user: User,
+  title: string,
+  releaseYear: number,
+  path: string,
+  publicAccess: boolean,
+  metadata: T,
+) => Promise<void>;
 
 export class LibraryContainer {
   private userMediaLimit: number;
   private userLibraryLimit: number;
 
-  private movies: Movie[];
-  private episodes: Episode[];
-  private songs: Song[];
-  private ebooks: Ebook[];
+  private movies: RepositoryInterface<Movie>;
+  private episodes: RepositoryInterface<Episode>;
+  private songs: RepositoryInterface<Song>;
+  private ebooks: RepositoryInterface<Ebook>;
 
   constructor() {
     this.userMediaLimit = 0;
     this.userLibraryLimit = 0;
-    this.movies = [];
-    this.episodes = [];
-    this.songs = [];
-    this.ebooks = [];
+
+    this.movies = new MediaRepositoryProxy(new MovieRepository());
+    this.episodes = new MediaRepositoryProxy(new EpisodeRepository());
+    this.songs = new MediaRepositoryProxy(new SongRepository());
+    this.ebooks = new MediaRepositoryProxy(new EbookRepository());
   }
 
   public setLimits(mediaLimit: number, libraryLimit: number): void {
@@ -37,136 +57,94 @@ export class LibraryContainer {
     this.userLibraryLimit = libraryLimit;
   }
 
-  public addMedia(
-    user: User,
-    title: string,
-    releaseYear: number,
-    path: string,
-    publicAccess: boolean,
-    metadata: MediaMetadata
-  ): void {
-    if (Movie.isMovieMetadata(metadata)) {
-      this.movies.forEach(function (movie) {
-        if (movie.title === title && movie.releaseYear === releaseYear) {
-          throw new Error(chalk.red(`Film znajduje sie juz w bibliotece!`));
-        }
-      });
-      if (!user.isAdmin()) {
-        if (
-          this.countUserLibrary(user) >= this.userLibraryLimit ||
-          this.countUserMedia(user, this.movies) >= this.userMediaLimit
-        ) {
-          throw new Error(
-            chalk.red(`Przekroczono dopuszczalny limit elementow w bibliotece!`)
-          );
-        }
+  public addMedia: AddMedia = async (user, title, releaseYear, path, publicAccess, metadata) => {
+    if (Movie.isMovieMetadata(metadata)) await this.addMovie(user, title, releaseYear, path, publicAccess, metadata);
+    else if (Episode.isEpisodeMetadata(metadata)) await this.addEpisode(user, title, releaseYear, path, publicAccess, metadata);
+    else if (Song.isSongMetadata(metadata)) await this.addSong(user, title, releaseYear, path, publicAccess, metadata);
+    else if (Ebook.isEbookMetadata(metadata)) await this.addEbook(user, title, releaseYear, path, publicAccess, metadata);
+    else throw new Error('Unknown media type');
+  };
+
+  private addMovie: AddMedia<MovieMetadata> = async (user, title, releaseYear, path, publicAccess, metadata) => {
+    if (await this.hasMedia(this.movies, title, releaseYear)) {
+      throw new Error('Movie already exists in library!');
+    }
+
+    await this.checkUserMediaLimit(user, this.movies);
+
+    // TODO: Use abstract factory
+    const movie = new Movie(title, releaseYear, path, user.getUsername(), publicAccess, metadata);
+    await this.movies.set(movie);
+
+    console.log(chalk.green('Added movie'), `[" ${title} "(" ${releaseYear} ")]\n`);
+  };
+
+  private addEpisode: AddMedia<EpisodeMetadata> = async (user, title, releaseYear, path, publicAccess, metadata) => {
+    if (await this.hasMedia(this.episodes, title, releaseYear)) {
+      throw new Error('Episode already exists in library!');
+    }
+
+    await this.checkUserMediaLimit(user, this.episodes);
+
+    const episode = new Episode(title, releaseYear, path, user.getUsername(), publicAccess, metadata);
+    await this.episodes.set(episode);
+
+    console.log(chalk.green('Added episode'), `[" ${title} "(" ${releaseYear} ")]\n`);
+  };
+
+  private addSong: AddMedia<SongMetadata> = async (user, title, releaseYear, path, publicAccess, metadata) => {
+    if (await this.hasMedia(this.songs, title, releaseYear)) {
+      throw new Error('Song already exists in library!');
+    }
+
+    await this.checkUserMediaLimit(user, this.songs);
+
+    const song = new Song(title, releaseYear, path, user.getUsername(), publicAccess, metadata);
+    await this.songs.set(song);
+
+    console.log(chalk.green('Added song'), `[" ${title} "(" ${releaseYear} ")]\n`);
+  };
+
+  private addEbook: AddMedia<EbookMetadata> = async (user, title, releaseYear, path, publicAccess, metadata) => {
+    if (await this.hasMedia(this.ebooks, title, releaseYear)) {
+      throw new Error('Ebook already exists in library!');
+    }
+
+    await this.checkUserMediaLimit(user, this.ebooks);
+
+    const ebook = new Ebook(title, releaseYear, path, user.getUsername(), publicAccess, metadata);
+    await this.ebooks.set(ebook);
+
+    console.log(chalk.green('Added ebook'), `[" ${title} "(" ${releaseYear} ")]\n`);
+  };
+
+  private async hasMedia<T extends MediaElement>(repository: RepositoryInterface<T>, title: string, releaseYear: number): Promise<boolean> {
+    const media = await repository.getAll();
+
+    for (const element of media) {
+      if (element.title === title && element.releaseYear === releaseYear) {
+        return true;
       }
-      const movie = new Movie(
-        title,
-        releaseYear,
-        path,
-        user.getUsername(),
-        publicAccess,
-        metadata
-      );
-      this.movies.push(movie);
-      console.log(
-        chalk.green(`Dodano film `) + `[" ${title} "(" ${releaseYear} ")]\n`
-      );
-    } else if (Episode.isEpisodeMetadata(metadata)) {
-      this.episodes.forEach(function (episode) {
-        if (episode.title === title && episode.releaseYear === releaseYear) {
-          throw new Error(chalk.red(`Odcinek znajduje sie juz w bibliotece!`));
-        }
-      });
-      if (!user.isAdmin()) {
-        if (
-          this.countUserLibrary(user) >= this.userLibraryLimit ||
-          this.countUserMedia(user, this.episodes) >= this.userMediaLimit
-        ) {
-          throw new Error(
-            chalk.red(`Przekroczono dopuszczalny limit elementow w bibliotece!`)
-          );
-        }
-      }
-      const episode = new Episode(
-        title,
-        releaseYear,
-        path,
-        user.getUsername(),
-        publicAccess,
-        metadata
-      );
-      this.episodes.push(episode);
-      console.log(
-        chalk.green(`Dodano odcinek `) + `[" ${title} "(" ${releaseYear} ")]\n`
-      );
-    } else if (Song.isSongMetadata(metadata)) {
-      this.songs.forEach((song) => {
-        if (song.title === title && song.releaseYear === releaseYear) {
-          throw new Error(chalk.red(`Piosenka znajduje sie juz w bibliotece!`));
-        }
-      });
-      if (!user.isAdmin()) {
-        if (
-          this.countUserLibrary(user) >= this.userLibraryLimit ||
-          this.countUserMedia(user, this.songs) >= this.userMediaLimit
-        ) {
-          throw new Error(
-            chalk.red(`Przekroczono dopuszczalny limit elementow w bibliotece!`)
-          );
-        }
-      }
-      const song = new Song(
-        title,
-        releaseYear,
-        path,
-        user.getUsername(),
-        publicAccess,
-        metadata
-      );
-      this.songs.push(song);
-      console.log(
-        chalk.green(`Dodano utwor `) + `[" ${title} "(" ${releaseYear} ")]\n`
-      );
-    } else if (Ebook.isEbookMetadata(metadata)) {
-      this.ebooks.forEach(function (ebook) {
-        if (ebook.title === title && ebook.releaseYear === releaseYear) {
-          throw new Error(chalk.red(`Ebook znajduje sie juz w bibliotece!`));
-        }
-      });
-      if (!user.isAdmin()) {
-        if (
-          this.countUserLibrary(user) >= this.userLibraryLimit ||
-          this.countUserMedia(user, this.ebooks) >= this.userMediaLimit
-        ) {
-          throw new Error(
-            chalk.red(`Przekroczono dopuszczalny limit elementow w bibliotece!`)
-          );
-        }
-      }
-      const ebook = new Ebook(
-        title,
-        releaseYear,
-        path,
-        user.getUsername(),
-        publicAccess,
-        metadata
-      );
-      this.ebooks.push(ebook);
-      console.log(
-        chalk.green(`Dodano ebook `) + `[" ${title} "(" ${releaseYear} ")]\n`
-      );
+    }
+
+    return false;
+  }
+
+  private async checkUserMediaLimit<T extends MediaElement>(user: User, repository: RepositoryInterface<T>): Promise<void> {
+    if (user.isAdmin()) return;
+
+    if (
+      (await this.countUserLibrary(user)) >= this.userLibraryLimit ||
+      (await this.countUserMedia(user, repository)) >= this.userMediaLimit
+    ) {
+      throw new Error('Exceeded the maximum number of elements in the library!');
     }
   }
 
-  countUserMedia<T extends MediaElement>(
-    user: User,
-    mediaContainer: T[]
-  ): number {
+  private async countUserMedia<T extends MediaElement>(user: User, repository: RepositoryInterface<T>): Promise<number> {
     let counter = 0;
 
-    for (const media of mediaContainer) {
+    for (const media of await repository.getAll()) {
       if (media.getOwner() === user.getUsername()) {
         counter++;
       }
@@ -175,188 +153,125 @@ export class LibraryContainer {
     return counter;
   }
 
-  public countUserLibrary(user: User): number {
-    return (
-      this.countUserMedia(user, this.movies) +
-      this.countUserMedia(user, this.episodes) +
-      this.countUserMedia(user, this.songs) +
-      this.countUserMedia(user, this.ebooks)
-    );
+  public async countUserLibrary(user: User): Promise<number> {
+    const stats = await Promise.all([
+      this.countUserMedia(user, this.movies),
+      this.countUserMedia(user, this.episodes),
+      this.countUserMedia(user, this.songs),
+      this.countUserMedia(user, this.ebooks),
+    ]);
+
+    return stats.reduce((a, b) => a + b, 0);
   }
 
-  public clear(): void {
-    this.movies = [];
-    this.episodes = [];
-    this.songs = [];
-    this.ebooks = [];
-  }
-
-  public print(user: User): void {
-    console.log(
-      chalk.yellow(`Ilosc elementow w bibliotece: `) +
-        `${this.countUserLibrary(user)}`
-    );
-    console.log(
-      chalk.yellow(`Ilosc filmow: `) +
-        `${this.countUserMedia(user, this.movies)}`
-    );
-    for (const movie of this.movies) {
-      if (!movie.isPublic()) {
-        if (!user.isAdmin() && user.getUsername() !== movie.getOwner()) {
-          continue;
-        }
+  private async printPublicRepository<T extends MediaElement>(user: User, repository: RepositoryInterface<T>): Promise<void> {
+    for await (const media of repository) {
+      if (media.isPublic() || user.isAdmin() || user.getUsername() !== media.getOwner()) {
+        media.print();
       }
-      movie.print();
-    }
-    console.log(
-      chalk.yellow(`Ilosc odcinkow: `) +
-        `${this.countUserMedia(user, this.episodes)}`
-    );
-    for (const episode of this.episodes) {
-      if (!episode.isPublic()) {
-        if (!user.isAdmin() && user.getUsername() !== episode.getOwner()) {
-          continue;
-        }
-      }
-      episode.print();
-    }
-    console.log(
-      chalk.yellow(`Ilosc utworow: `) +
-        `${this.countUserMedia(user, this.songs)}`
-    );
-    for (const song of this.songs) {
-      if (!song.isPublic()) {
-        if (!user.isAdmin() && user.getUsername() !== song.getOwner()) {
-          continue;
-        }
-      }
-      song.print();
-    }
-    console.log(
-      chalk.yellow(`Ilosc ebookow: `) +
-        `${this.countUserMedia(user, this.ebooks)}`
-    );
-    for (const ebook of this.ebooks) {
-      if (!ebook.isPublic()) {
-        if (!user.isAdmin() && user.getUsername() !== ebook.getOwner()) {
-          continue;
-        }
-      }
-      ebook.print();
     }
   }
 
-  public printUserMedia(user: User): void {
+  public async clear(): Promise<void> {
+    for await (const media of this.movies) {
+      await this.movies.delete(media);
+    }
+
+    for await (const media of this.episodes) {
+      await this.episodes.delete(media);
+    }
+
+    for await (const media of this.songs) {
+      await this.songs.delete(media);
+    }
+
+    for await (const media of this.ebooks) {
+      await this.ebooks.delete(media);
+    }
+  }
+
+  public async print(user: User): Promise<void> {
+    console.log(chalk.yellow('Number of elements in the library:'), await this.countUserLibrary(user));
+
+    console.log(chalk.yellow('Movies:'), this.countUserMedia(user, this.movies));
+    await this.printPublicRepository(user, this.movies);
+
+    console.log(chalk.yellow('Episodes:'), this.countUserMedia(user, this.episodes));
+    await this.printPublicRepository(user, this.episodes);
+
+    console.log(chalk.yellow('Songs:'), this.countUserMedia(user, this.songs));
+    await this.printPublicRepository(user, this.songs);
+
+    console.log(chalk.yellow('Ebooks:'), this.countUserMedia(user, this.ebooks));
+    await this.printPublicRepository(user, this.ebooks);
+  }
+
+  public async printUserMedia(user: User): Promise<void> {
     let counter = 0;
-    console.log(
-      chalk.yellow(`Ilosc elementow w bibliotece: `) +
-        `${this.countUserLibrary(user)}`
-    );
-    console.log(
-      chalk.yellow(`Ilosc filmow: `) +
-        `${this.countUserMedia(user, this.movies)}`
-    );
-    for (const movie of this.movies) {
+
+    console.log(chalk.yellow('Number of elements in the library:'), this.countUserLibrary(user));
+    console.log(chalk.yellow('Movies:'), this.countUserMedia(user, this.movies));
+    for await (const movie of this.movies) {
       if (movie.getOwner() === user.getUsername()) {
         movie.print();
         counter += 1;
       }
     }
-    console.log(
-      chalk.yellow(`Ilosc odcinkow: `) +
-        `${this.countUserMedia(user, this.episodes)}`
-    );
-    for (const episode of this.episodes) {
+
+    console.log(chalk.yellow('Episodes:'), this.countUserMedia(user, this.episodes));
+    for await (const episode of this.episodes) {
       if (episode.getOwner() === user.getUsername()) {
         episode.print();
         counter += 1;
       }
     }
-    console.log(
-      chalk.yellow(`Ilosc utworow: `) +
-        `${this.countUserMedia(user, this.songs)}`
-    );
-    for (const song of this.songs) {
+
+    console.log(chalk.yellow('Songs:'), this.countUserMedia(user, this.songs));
+    for await (const song of this.songs) {
       if (song.getOwner() === user.getUsername()) {
         song.print();
         counter += 1;
       }
     }
-    console.log(
-      chalk.yellow(`Ilosc ebookow: `) +
-        `${this.countUserMedia(user, this.ebooks)}`
-    );
-    for (const ebook of this.ebooks) {
+
+    console.log(chalk.yellow('Ebooks:'), this.countUserMedia(user, this.ebooks));
+    for await (const ebook of this.ebooks) {
       if (ebook.getOwner() === user.getUsername()) {
         ebook.print();
         counter += 1;
       }
     }
+
     if (counter === 0) {
-      console.log(chalk.red(`Uzytkownik nie posiada elementow w bibliotece!`));
+      console.log('User does not own any elements in the library!');
     } else {
-      console.log(
-        chalk.yellow(`Laczna ilosc multimediow dla `) +
-          `[${user.getDisplayName()}]: ${counter}`
-      );
+      console.log(chalk.yellow('Total number of elements owned by'), `[${user.getDisplayName()}]: ${counter}`);
     }
   }
 
-  public removeMedia(
+  public async removeMedia<T extends MediaElement>(
     user: User,
-    mediaContainer: MediaElement[],
+    repository: RepositoryInterface<T>,
     title: string,
-    releaseYear: number
-  ): void {
-    let index = -1;
-    for (let i = 0; i < mediaContainer.length; i++) {
-      if (
-        typeof mediaContainer[i] === 'string' &&
-        mediaContainer[i] !== undefined
-      ) {
-        if (
-          mediaContainer[i]?.title === title &&
-          mediaContainer[i]?.releaseYear === releaseYear
-        ) {
-          index = i;
-          break;
-        }
-      }
+    releaseYear: number,
+  ): Promise<void> {
+    const media = await repository.getAll();
+
+    const target = media.find((element) => element.title === title && element.releaseYear === releaseYear);
+    if (target === undefined) throw new Error('Specified element does not exist!');
+
+    if (!user.isAdmin() && user.getUsername() !== target.getOwner()) {
+      throw new Error('Insufficient permissions to remove this element!');
     }
 
-    for (const media of mediaContainer) {
-      if (media.title === title && media.releaseYear === releaseYear) {
-        index = mediaContainer.indexOf(media);
-        break;
-      }
-    }
-
-    if (index === -1) {
-      throw new Error(
-        chalk.red(`Element o podanych parametrach nie istnieje!`)
-      );
-    }
-
-    if (
-      !user.isAdmin() &&
-      user.getUsername() !== mediaContainer[index].getOwner()
-    ) {
-      throw new Error(
-        chalk.red(`Nie masz uprawnien do usuniecia tego elementu!`)
-      );
-    }
-
-    mediaContainer.splice(index, 1);
+    repository.delete(target);
   }
 
-  public getAlbum(song: Song): Album {
+  public async getAlbum(song: Song): Promise<Album> {
     const album = new Album(song);
 
-    for (const song of this.songs) {
-      if (
-        song.getMetadata().album === album.getMetadata().album &&
-        song.metadata.artist === album.getMetadata().artist
-      ) {
+    for await (const song of this.songs) {
+      if (song.getMetadata().album === album.getMetadata().album && song.metadata.artist === album.getMetadata().artist) {
         album.addSong(song);
       }
     }
@@ -364,34 +279,24 @@ export class LibraryContainer {
     return album;
   }
 
-  public editMetadata<T extends MediaElement, M>(
+  public async editMetadata<T extends MediaElement, M extends MediaMetadata>(
     user: User,
-    mediaContainer: T[],
+    repository: RepositoryInterface<T>,
     title: string,
     releaseYear: number,
-    metadata: M
-  ): void {
-    try {
-      for (let i = 0; i < mediaContainer.length; i++) {
-        if (
-          mediaContainer[i].title === title &&
-          mediaContainer[i].releaseYear === releaseYear
-        ) {
-          if (
-            mediaContainer[i].getOwner() !== user.getUsername() &&
-            !user.isAdmin()
-          ) {
-            throw new Error(
-              chalk.red('Brak wymaganych uprawnien do zarzadzania tym zasobem!')
-            );
-          }
-          mediaContainer[i].setMetadata(metadata);
-          return;
-        }
-      }
-      throw new Error(chalk.red('Nie znaleziono elementu w bibliotece!'));
-    } catch (err) {
-      console.error(err);
+    metadata: M,
+  ): Promise<void> {
+    const media = await repository.getAll();
+
+    const target = media.find((element) => element.title === title && element.releaseYear === releaseYear);
+    if (target === undefined) throw new Error('Specified element does not exist!');
+
+    if (!user.isAdmin() && user.getUsername() !== target.getOwner()) {
+      throw new Error('Insufficient permissions to edit this element!');
     }
+
+    target.setMetadata(metadata);
+
+    await repository.update(target);
   }
 }
