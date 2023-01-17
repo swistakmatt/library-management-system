@@ -1,32 +1,27 @@
 import { User } from '../users/User.js';
 import * as readlineSync from 'readline-sync';
 import { UserContainer } from '../users/UserContainer.js';
-import { Ebook } from '../media/Ebook.js';
-import { Song } from '../media/Song.js';
-import { Episode } from '../media/Episode.js';
-import { Movie } from '../media/Movie.js';
 import { LibraryContainer } from '../media/LibraryContainer.js';
 import chalk from 'chalk';
+import { MovieMetadata } from '../media/Movie.js';
+import { EpisodeMetadata } from '../media/Episode.js';
+import { SongMetadata } from '../media/Song.js';
+import { EbookMetadata } from '../media/Ebook.js';
+
 
 export class Menu {
-  public static registerUser(users: UserContainer): void {
+  public static async registerUser(users: UserContainer): Promise<void> {
     let admin: boolean;
 
     console.log(chalk.yellow('Registering a new user'));
 
-    const username: string = readlineSync.question(
-      chalk.yellow('Username: ')
-    );
+    const username: string = readlineSync.question(chalk.yellow('Username: '));
 
-    const displayName: string = readlineSync.question(
-      chalk.yellow('Display name: ')
-    );
+    const displayName: string = readlineSync.question(chalk.yellow('Display name: '));
 
     const password: string = readlineSync.question(chalk.yellow('Password: '));
 
-    const buf: string = readlineSync.question(
-      chalk.yellow('Admin [Y/N]: ')
-    );
+    const buf: string = readlineSync.question(chalk.yellow('Admin [Y/N]: '));
 
     if (buf === 'Y' || buf === 'y') {
       admin = true;
@@ -34,25 +29,21 @@ export class Menu {
       admin = false;
     }
 
-    void users.addUser(username, password, displayName, admin);
+    await users.addUser(username, password, displayName, admin);
   }
 
-  public static addMovie(activeUser: User, library: LibraryContainer): void {
+  public static async addMovie(activeUser: User, library: LibraryContainer): Promise<void> {
     let isPublic: boolean;
 
     console.log(chalk.yellow('Adding new movie'));
 
     const title: string = readlineSync.question(chalk.yellow('Title: '));
 
-    const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Release year: '))
-    );
+    const releaseYear: number = parseInt(readlineSync.question(chalk.yellow('Release year: ')));
 
     const path: string = readlineSync.question(chalk.yellow('Path: '));
 
-    const buf: string = readlineSync.question(
-      chalk.yellow('Public [Y/N]: ')
-    );
+    const buf: string = readlineSync.question(chalk.yellow('Public [Y/N]: '));
 
     if (buf === 'Y' || buf === 'y') {
       isPublic = true;
@@ -60,25 +51,29 @@ export class Menu {
       isPublic = false;
     }
 
-    library.addMedia(activeUser, title, releaseYear, path, isPublic, {});
+
+    const metadata: MovieMetadata = {
+      length: parseInt(readlineSync.question(chalk.yellow('Length: '))),
+      genre: readlineSync.question(chalk.yellow('Genre: ')),
+      releaseDate: readlineSync.question(chalk.yellow('Release date: ')),
+      cast: {},
+    };
+
+    await library.addMedia(activeUser, title, releaseYear, path, isPublic, metadata);
   }
 
-  public static addEpisode(activeUser: User, library: LibraryContainer): void {
+  public static async addEpisode(activeUser: User, library: LibraryContainer): Promise<void> {
     let isPublic: boolean;
 
     console.log(chalk.yellow('Adding new episode'));
 
     const title: string = readlineSync.question(chalk.yellow('Title: '));
 
-    const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Release year: '))
-    );
+    const releaseYear: number = parseInt(readlineSync.question(chalk.yellow('Release year: ')));
 
     const path: string = readlineSync.question(chalk.yellow('Path: '));
 
-    const buf: string = readlineSync.question(
-      chalk.yellow('Public [Y/N]: ')
-    );
+    const buf: string = readlineSync.question(chalk.yellow('Public [Y/N]: '));
 
     if (buf === 'Y' || buf === 'y') {
       isPublic = true;
@@ -86,25 +81,32 @@ export class Menu {
       isPublic = false;
     }
 
-    library.addMedia(activeUser, title, releaseYear, path, isPublic, {});
+
+    const metadata: EpisodeMetadata = {
+      length: parseInt(readlineSync.question(chalk.yellow('Length: '))),
+      genre: readlineSync.question(chalk.yellow('Genre: ')),
+      cast: {},
+      episodeNumber: parseInt(readlineSync.question(chalk.yellow('Episode number: '))),
+      seasonNumber: parseInt(readlineSync.question(chalk.yellow('Season number: '))),
+      releaseDate: readlineSync.question(chalk.yellow('Release date: ')),
+      series: readlineSync.question(chalk.yellow('Series: ')),
+    };
+
+    await library.addMedia(activeUser, title, releaseYear, path, isPublic, metadata);
   }
 
-  public static addSong(activeUser: User, library: LibraryContainer): void {
+  public static async addSong(activeUser: User, library: LibraryContainer): Promise<void> {
     let isPublic: boolean;
 
     console.log(chalk.yellow('Adding new song'));
 
     const title: string = readlineSync.question(chalk.yellow('Title: '));
 
-    const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Release year: '))
-    );
+    const releaseYear: number = parseInt(readlineSync.question(chalk.yellow('Release year: ')));
 
     const path: string = readlineSync.question(chalk.yellow('Path: '));
 
-    const buf: string = readlineSync.question(
-      chalk.yellow('Public [Y/N]: ')
-    );
+    const buf: string = readlineSync.question(chalk.yellow('Public [Y/N]: '));
 
     if (buf === 'Y' || buf === 'y') {
       isPublic = true;
@@ -112,25 +114,31 @@ export class Menu {
       isPublic = false;
     }
 
-    library.addMedia(activeUser, title, releaseYear, path, isPublic, {});
+
+    const metadata: SongMetadata = {
+      album: readlineSync.question(chalk.yellow('Album: ')),
+      artist: readlineSync.question(chalk.yellow('Artist: ')),
+      genre: readlineSync.question(chalk.yellow('Genre: ')),
+      length: parseInt(readlineSync.question(chalk.yellow('Length: '))),
+      releaseDate: readlineSync.question(chalk.yellow('Release date: ')),
+      trackNumber: parseInt(readlineSync.question(chalk.yellow('Track number: '))),
+    };
+
+    await library.addMedia(activeUser, title, releaseYear, path, isPublic, metadata);
   }
 
-  public static addEbook(activeUser: User, library: LibraryContainer): void {
+  public static async addEbook(activeUser: User, library: LibraryContainer): Promise<void> {
     let isPublic: boolean;
 
     console.log(chalk.yellow('Adding new ebook'));
 
     const title: string = readlineSync.question(chalk.yellow('Title: '));
 
-    const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Release year: '))
-    );
+    const releaseYear: number = parseInt(readlineSync.question(chalk.yellow('Release year: ')));
 
     const path: string = readlineSync.question(chalk.yellow('Path: '));
 
-    const buf: string = readlineSync.question(
-      chalk.yellow('Public [Y/N]: ')
-    );
+    const buf: string = readlineSync.question(chalk.yellow('Public [Y/N]: '));
 
     if (buf === 'Y' || buf === 'y') {
       isPublic = true;
@@ -138,169 +146,124 @@ export class Menu {
       isPublic = false;
     }
 
-    library.addMedia(activeUser, title, releaseYear, path, isPublic, {});
+
+    const metadata: EbookMetadata = {
+      author: readlineSync.question(chalk.yellow('Author: ')),
+      genre: readlineSync.question(chalk.yellow('Genre: ')),
+      numberOfPages: parseInt(readlineSync.question(chalk.yellow('Number of pages: '))),
+      releaseDate: readlineSync.question(chalk.yellow('Release date: ')),
+    };
+
+    await library.addMedia(activeUser, title, releaseYear, path, isPublic, metadata);
   }
 
-  public static removeMovie(activeUser: User, library: LibraryContainer): void {
+  public static async removeMovie(activeUser: User, library: LibraryContainer): Promise<void> {
     console.log(chalk.yellow('Removing movie'));
 
     const title: string = readlineSync.question(chalk.yellow('Title: '));
 
-    const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Release year: '))
-    );
+    const releaseYear: number = parseInt(readlineSync.question(chalk.yellow('Release year: ')));
 
-    library.removeMedia(activeUser, library.getMovies(), title, releaseYear);
+    await library.removeMedia(activeUser, library.movies, title, releaseYear);
   }
 
-  public static removeEpisode(
-    activeUser: User,
-    library: LibraryContainer
-  ): void {
+  public static async removeEpisode(activeUser: User, library: LibraryContainer): Promise<void> {
     console.log(chalk.yellow('Removing episode'));
 
     const title: string = readlineSync.question(chalk.yellow('Title: '));
 
-    const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Release year: '))
-    );
+    const releaseYear: number = parseInt(readlineSync.question(chalk.yellow('Release year: ')));
 
-    library.removeMedia(activeUser, library.getEpisodes(), title, releaseYear);
+    await library.removeMedia(activeUser, library.episodes, title, releaseYear);
   }
 
-  public static removeSong(activeUser: User, library: LibraryContainer): void {
+  public static async removeSong(activeUser: User, library: LibraryContainer): Promise<void> {
     console.log(chalk.yellow('Removing song'));
 
     const title: string = readlineSync.question(chalk.yellow('Title: '));
 
-    const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Release year: '))
-    );
+    const releaseYear: number = parseInt(readlineSync.question(chalk.yellow('Release year: ')));
 
-    library.removeMedia(activeUser, library.getSongs(), title, releaseYear);
+    await library.removeMedia(activeUser, library.songs, title, releaseYear);
   }
 
-  public static removeEbook(activeUser: User, library: LibraryContainer): void {
+  public static async removeEbook(activeUser: User, library: LibraryContainer): Promise<void> {
     console.log(chalk.yellow('Removing ebook'));
 
     const title: string = readlineSync.question(chalk.yellow('Title: '));
 
-    const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Release year: '))
-    );
+    const releaseYear: number = parseInt(readlineSync.question(chalk.yellow('Release year: ')));
 
-    library.removeMedia(activeUser, library.getEbooks(), title, releaseYear);
+    await library.removeMedia(activeUser, library.ebooks, title, releaseYear);
   }
 
-  public static printAlbum(activeUser: User, library: LibraryContainer): void {
+  public static async printAlbum(activeUser: User, library: LibraryContainer): Promise<void> {
     console.log(chalk.yellow('Printing album'));
 
     const title: string = readlineSync.question(chalk.yellow('Title: '));
 
-    const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Release year: '))
-    );
+    const releaseYear: number = parseInt(readlineSync.question(chalk.yellow('Release year: ')));
 
-    const media = library.getMedia(
-      activeUser,
-      library.getSongs(),
-      title,
-      releaseYear
-    ) as Song;
-    library.getAlbum(media).print();
+    const media = await library.getMedia(activeUser, library.songs, title, releaseYear);
+    (await library.getAlbum(media)).print();
   }
 
-  public static printMovie(activeUser: User, library: LibraryContainer): void {
+  public static async printMovie(activeUser: User, library: LibraryContainer): Promise<void> {
     console.log(chalk.yellow('Printing information about movie'));
 
     const title: string = readlineSync.question(chalk.yellow('Title: '));
 
-    const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Release year: '))
-    );
+    const releaseYear: number = parseInt(readlineSync.question(chalk.yellow('Release year: ')));
 
-    const media = library.getMedia(
-      activeUser,
-      library.getMovies(),
-      title,
-      releaseYear
-    ) as Movie;
+    const media = await library.getMedia(activeUser, library.movies, title, releaseYear);
     media.print();
   }
 
-  public static printEpisode(
-    activeUser: User,
-    library: LibraryContainer
-  ): void {
+  public static async printEpisode(activeUser: User, library: LibraryContainer): Promise<void> {
     console.log(chalk.yellow('Printing information about episode'));
 
     const title: string = readlineSync.question(chalk.yellow('Title: '));
 
-    const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Release year: '))
-    );
+    const releaseYear: number = parseInt(readlineSync.question(chalk.yellow('Release year: ')));
 
-    const media = library.getMedia(
-      activeUser,
-      library.getEpisodes(),
-      title,
-      releaseYear
-    ) as Episode;
+    const media = await library.getMedia(activeUser, library.episodes, title, releaseYear);
     media.print();
   }
 
-  public static printSong(activeUser: User, library: LibraryContainer): void {
+  public static async printSong(activeUser: User, library: LibraryContainer): Promise<void> {
     console.log(chalk.yellow('Printing information about song'));
 
     const title: string = readlineSync.question(chalk.yellow('Title: '));
 
-    const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Release year: '))
-    );
+    const releaseYear: number = parseInt(readlineSync.question(chalk.yellow('Release year: ')));
 
-    const media = library.getMedia(
-      activeUser,
-      library.getSongs(),
-      title,
-      releaseYear
-    ) as Song;
+    const media = await library.getMedia(activeUser, library.songs, title, releaseYear);
     media.print();
   }
 
-  public static printEbook(activeUser: User, library: LibraryContainer): void {
+  public static async printEbook(activeUser: User, library: LibraryContainer): Promise<void> {
     console.log(chalk.yellow('Printing information about ebook'));
 
     const title: string = readlineSync.question(chalk.yellow('Title: '));
 
-    const releaseYear: number = parseInt(
-      readlineSync.question(chalk.yellow('Release year: '))
-    );
+    const releaseYear: number = parseInt(readlineSync.question(chalk.yellow('Release year: ')));
 
-    const media = library.getMedia(
-      activeUser,
-      library.getEbooks(),
-      title,
-      releaseYear
-    ) as Ebook;
+    const media = await library.getMedia(activeUser, library.ebooks, title, releaseYear);
     media.print();
   }
 
   public static changeDisplayname(activeUser: User): void {
     console.log(chalk.yellow('Changing display name'));
 
-    const displayName: string = readlineSync.question(
-      chalk.yellow('Display name: ')
-    );
+    const displayName: string = readlineSync.question(chalk.yellow('Display name: '));
 
     activeUser.setDisplayName(displayName);
   }
 
-  public static loginUser(users: UserContainer): User {
+  public static async loginUser(users: UserContainer): Promise<User> {
     console.log(chalk.yellow('Logging in'));
 
-    const username: string = readlineSync.question(
-      chalk.yellow('Username: ')
-    );
+    const username: string = readlineSync.question(chalk.yellow('Username: '));
 
     const password: string = readlineSync.question(chalk.yellow('Password: '));
 
@@ -312,9 +275,7 @@ export class Menu {
 
     console.log(chalk.yellow('Changing user permissions'));
 
-    const buf: string = readlineSync.question(
-      chalk.yellow('Admin [Y/N]: ')
-    );
+    const buf: string = readlineSync.question(chalk.yellow('Admin [Y/N]: '));
 
     if (buf === 'Y' || buf === 'y') {
       admin = true;
@@ -322,7 +283,7 @@ export class Menu {
       admin = false;
     }
 
-    activeUser.setAdminStatus(admin);
+    activeUser.setAdmin(admin);
   }
 
   public static printMenuOptions(): void {
@@ -378,7 +339,7 @@ export class Menu {
         chalk.yellow('26. ') +
         'Print informations about the active user\n\n' +
         chalk.red('0. ') +
-        'End program\n'
+        'End program\n',
     );
   }
 }

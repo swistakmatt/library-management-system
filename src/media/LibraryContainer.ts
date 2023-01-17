@@ -5,7 +5,7 @@ import { Ebook, EbookMetadata } from './Ebook.js';
 import { Movie, MovieMetadata } from './Movie.js';
 import { Episode, EpisodeMetadata } from './Episode.js';
 import { User } from '../users/User.js';
-import { MediaElement } from './MediaElement.js';
+import { BaseMetadata, MediaElement } from './MediaElement.js';
 import chalk from 'chalk';
 import { MediaRepositoryProxy } from './repositories/MediaRepositoryProxy.js';
 import { MovieRepository } from './repositories/MovieRepository.js';
@@ -37,10 +37,10 @@ export class LibraryContainer {
   private userMediaLimit: number;
   private userLibraryLimit: number;
 
-  private movies: RepositoryInterface<Movie>;
-  private episodes: RepositoryInterface<Episode>;
-  private songs: RepositoryInterface<Song>;
-  private ebooks: RepositoryInterface<Ebook>;
+  public movies: RepositoryInterface<Movie>;
+  public episodes: RepositoryInterface<Episode>;
+  public songs: RepositoryInterface<Song>;
+  public ebooks: RepositoryInterface<Ebook>;
 
   constructor() {
     this.userMediaLimit = 0;
@@ -118,7 +118,7 @@ export class LibraryContainer {
     console.log(chalk.green('Added ebook'), `[" ${title} "(" ${releaseYear} ")]\n`);
   };
 
-  private async hasMedia<T extends MediaElement>(repository: RepositoryInterface<T>, title: string, releaseYear: number): Promise<boolean> {
+  public async hasMedia<T extends MediaElement>(repository: RepositoryInterface<T>, title: string, releaseYear: number): Promise<boolean> {
     const media = await repository.getAll();
 
     for (const element of media) {
@@ -128,6 +128,19 @@ export class LibraryContainer {
     }
 
     return false;
+  }
+
+  public async getMedia<T extends MediaElement>(user: User, repository: RepositoryInterface<T>, title: string, releaseYear: number): Promise<T> {
+    const media = await repository.getAll();
+
+    const target = media.find((element) => element.title === title && element.releaseYear === releaseYear);
+    if (!target) throw new Error('Media not found!');
+
+    if (!target.isPublic() && target.getOwner() !== user.getUsername()) {
+      throw new Error('Media not found!');
+    }
+
+    return target;
   }
 
   private async checkUserMediaLimit<T extends MediaElement>(user: User, repository: RepositoryInterface<T>): Promise<void> {
@@ -193,16 +206,16 @@ export class LibraryContainer {
   public async print(user: User): Promise<void> {
     console.log(chalk.yellow('Number of elements in the library:'), await this.countUserLibrary(user));
 
-    console.log(chalk.yellow('Movies:'), this.countUserMedia(user, this.movies));
+    console.log(chalk.yellow('Movies:'), await this.countUserMedia(user, this.movies));
     await this.printPublicRepository(user, this.movies);
 
-    console.log(chalk.yellow('Episodes:'), this.countUserMedia(user, this.episodes));
+    console.log(chalk.yellow('Episodes:'), await this.countUserMedia(user, this.episodes));
     await this.printPublicRepository(user, this.episodes);
 
-    console.log(chalk.yellow('Songs:'), this.countUserMedia(user, this.songs));
+    console.log(chalk.yellow('Songs:'), await this.countUserMedia(user, this.songs));
     await this.printPublicRepository(user, this.songs);
 
-    console.log(chalk.yellow('Ebooks:'), this.countUserMedia(user, this.ebooks));
+    console.log(chalk.yellow('Ebooks:'), await this.countUserMedia(user, this.ebooks));
     await this.printPublicRepository(user, this.ebooks);
   }
 
@@ -210,7 +223,7 @@ export class LibraryContainer {
     let counter = 0;
 
     console.log(chalk.yellow('Number of elements in the library:'), this.countUserLibrary(user));
-    console.log(chalk.yellow('Movies:'), this.countUserMedia(user, this.movies));
+    console.log(chalk.yellow('Movies:'), await this.countUserMedia(user, this.movies));
     for await (const movie of this.movies) {
       if (movie.getOwner() === user.getUsername()) {
         movie.print();
@@ -218,7 +231,7 @@ export class LibraryContainer {
       }
     }
 
-    console.log(chalk.yellow('Episodes:'), this.countUserMedia(user, this.episodes));
+    console.log(chalk.yellow('Episodes:'), await this.countUserMedia(user, this.episodes));
     for await (const episode of this.episodes) {
       if (episode.getOwner() === user.getUsername()) {
         episode.print();
@@ -226,7 +239,7 @@ export class LibraryContainer {
       }
     }
 
-    console.log(chalk.yellow('Songs:'), this.countUserMedia(user, this.songs));
+    console.log(chalk.yellow('Songs:'), await this.countUserMedia(user, this.songs));
     for await (const song of this.songs) {
       if (song.getOwner() === user.getUsername()) {
         song.print();
@@ -234,7 +247,7 @@ export class LibraryContainer {
       }
     }
 
-    console.log(chalk.yellow('Ebooks:'), this.countUserMedia(user, this.ebooks));
+    console.log(chalk.yellow('Ebooks:'), await this.countUserMedia(user, this.ebooks));
     for await (const ebook of this.ebooks) {
       if (ebook.getOwner() === user.getUsername()) {
         ebook.print();
@@ -284,7 +297,7 @@ export class LibraryContainer {
     repository: RepositoryInterface<T>,
     title: string,
     releaseYear: number,
-    metadata: M,
+    metadata: M & BaseMetadata,
   ): Promise<void> {
     const media = await repository.getAll();
 
@@ -295,7 +308,17 @@ export class LibraryContainer {
       throw new Error('Insufficient permissions to edit this element!');
     }
 
-    target.setMetadata(metadata);
+    target.setBaseMetadata({
+      title: metadata.title,
+      releaseYear: metadata.releaseYear,
+      path: metadata.path,
+      owner: metadata.owner,
+      _public: metadata._public,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { title: _, releaseYear: __, path: ___, owner: ____, _public: _____, ...rest } = metadata;
+    target.setMetadata(rest);
 
     await repository.update(target);
   }

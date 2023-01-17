@@ -1,6 +1,6 @@
-import { MediaElement, MediaMetadata } from '../MediaElement.js';
+import { BaseMetadata, MediaElement } from '../MediaElement.js';
 
-export class MediaElementBuilder implements MediaMetadata {
+export class MediaElementBuilder implements BaseMetadata {
   public id: number | null = null;
   public title: string;
   public releaseYear: number;
@@ -79,6 +79,6 @@ export class MediaElementBuilder implements MediaMetadata {
   }
 
   public build(): void {
-    throw new Error('You can\'t build a MediaElement directly. Please use a subclass instead.')
+    throw new Error('You can\'t build a MediaElement directly. Please use a subclass instead.');
   }
 }

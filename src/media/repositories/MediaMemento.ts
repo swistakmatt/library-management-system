@@ -1,7 +1,7 @@
 import { MediaMetadata as ElementMetadata } from '../LibraryContainer.js';
-import { MediaMetadata } from '../MediaElement.js';
+import { BaseMetadata } from '../MediaElement.js';
 
-export type MediaMementoState<T extends ElementMetadata> = T & Omit<MediaMetadata, 'id'>;
+export type MediaMementoState<T extends ElementMetadata> = T & Omit<BaseMetadata, 'id'>;
 
 export interface Memento<T extends ElementMetadata> {
   getState(): MediaMementoState<T>;

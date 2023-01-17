@@ -11,8 +11,7 @@ export class UserContainer {
     displayName: string,
     admin: boolean
   ): Promise<void> {
-    const existingUser = await this.userRepository.getByUsername(username);
-    if (existingUser) {
+    if (await this.userRepository.hasUsername(username)) {
       throw new Error('A user with that name already exists!');
     }
 
@@ -30,11 +29,16 @@ export class UserContainer {
     console.log(chalk.green(`User registered `) + `[${username}]`);
   }
 
-  public async getUser(username: string): Promise<User> {
+  public async getUser(username: string, password: string): Promise<User> {
     const user = await this.userRepository.getByUsername(username);
     if (!user) {
       throw new Error(`User named ${username} does not exist`);
     }
+
+    if (user.getPassword() !== password) {
+      throw new Error('Incorrect password!');
+    }
+
     return user;
   }
 

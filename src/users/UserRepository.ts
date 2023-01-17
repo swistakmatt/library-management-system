@@ -36,12 +36,12 @@ export class UserRepository extends Repository<User> {
   public async set(instance: User): Promise<number> {
     const db = Database.getConnection();
 
-    const statement = await db.run(
-      `UPDATE User SET
-        username = $username,
-        password = $password,
-        displayName = $displayName,
-        admin = $admin`,
+    const statement = await db.get(
+      `INSERT INTO User 
+       (username, password, displayName, admin)
+       VALUES
+       ($username, $password, $displayName, $admin)
+       returning id`,
       {
         $username: instance.getUsername(),
         $password: instance.getPassword(),
@@ -49,6 +49,8 @@ export class UserRepository extends Repository<User> {
         $admin: instance.isAdmin(),
       }
     );
+
+    console.log(statement);
 
     if (this.statementContainsId(statement)) {
       return statement.id;

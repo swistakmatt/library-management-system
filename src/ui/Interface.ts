@@ -6,7 +6,11 @@ import { User } from '../users/User.js';
 import chalk from 'chalk';
 
 export class Interface {
-  public static app(): void {
+  private static sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  public static async app(): Promise<void> {
     const users = new UserContainer();
     const library = new LibraryContainer();
 
@@ -23,17 +27,19 @@ export class Interface {
       switch (option) {
         case 1:
           console.clear();
-          Menu.registerUser(users);
+          await Menu.registerUser(users);
           break;
         case 2:
           console.clear();
           activeUser = null;
           while (activeUser === null) {
-            activeUser = Menu.loginUser(users);
+            activeUser = await Menu.loginUser(users);
           }
           console.log(
             chalk.green(`Logged in as [${activeUser.getDisplayName()}]`)
           );
+
+          await Interface.sleep(1000);
           break;
         case 3:
           console.clear();
@@ -50,90 +56,91 @@ export class Interface {
         case 5:
           console.clear();
           if (activeUser !== null) {
-            Menu.addMovie(activeUser, library);
+            await Menu.addMovie(activeUser, library);
           }
           break;
         case 6:
           console.clear();
           if (activeUser !== null) {
-            Menu.addEpisode(activeUser, library);
+            await Menu.addEpisode(activeUser, library);
           }
           break;
         case 7:
           console.clear();
           if (activeUser !== null) {
-            Menu.addSong(activeUser, library);
+            await Menu.addSong(activeUser, library);
           }
           break;
         case 8:
           console.clear();
           if (activeUser !== null) {
-            Menu.addEbook(activeUser, library);
+            await Menu.addEbook(activeUser, library);
           }
           break;
         case 13:
           console.clear();
           if (activeUser !== null) {
-            Menu.removeMovie(activeUser, library);
+            await Menu.removeMovie(activeUser, library);
           }
           break;
         case 14:
           console.clear();
           if (activeUser !== null) {
-            Menu.removeEpisode(activeUser, library);
+            await Menu.removeEpisode(activeUser, library);
           }
           break;
         case 15:
           console.clear();
           if (activeUser !== null) {
-            Menu.removeSong(activeUser, library);
+            await Menu.removeSong(activeUser, library);
           }
           break;
         case 16:
           console.clear();
           if (activeUser !== null) {
-            Menu.removeEbook(activeUser, library);
+            await Menu.removeEbook(activeUser, library);
           }
           break;
         case 17:
           console.clear();
           if (activeUser !== null) {
-            library.print(activeUser);
+            await library.print(activeUser);
+            readlineSync.keyInPause();
           }
           break;
         case 18:
           console.clear();
           if (activeUser !== null) {
-            library.printUserMedia(activeUser);
+            await library.printUserMedia(activeUser);
           }
           break;
         case 19:
           console.clear();
           if (activeUser !== null) {
-            Menu.printMovie(activeUser, library);
+            await Menu.printMovie(activeUser, library);
           }
           break;
         case 20:
           console.clear();
           if (activeUser !== null) {
-            Menu.printEpisode(activeUser, library);
+            await Menu.printEpisode(activeUser, library);
           }
           break;
         case 21:
           console.clear();
           if (activeUser !== null) {
-            Menu.printSong(activeUser, library);
+            await Menu.printSong(activeUser, library);
           }
           break;
         case 22:
           if (activeUser !== null) {
-            Menu.printEbook(activeUser, library);
+            await Menu.printEbook(activeUser, library);
           }
           break;
         case 23:
           console.clear();
           if (activeUser !== null) {
-            Menu.printAlbum(activeUser, library);
+            await Menu.printAlbum(activeUser, library);
           }
           break;
         case 26:
@@ -151,6 +158,8 @@ export class Interface {
           console.log(chalk.red('This option does not exist!'));
           break;
       }
+
+      // readlineSync.keyInPause('Press any key to continue...', { hideEchoBack: true });
     } while (loop);
   }
 }

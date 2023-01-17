@@ -1,6 +1,6 @@
 import { DatabaseElement } from '../database/DatabaseElement.js';
 
-export interface MediaMetadata {
+export interface BaseMetadata {
   id: number | null;
   title: string;
   releaseYear: number;
@@ -9,7 +9,7 @@ export interface MediaMetadata {
   _public: boolean;
 }
 
-export abstract class MediaElement implements Omit<MediaMetadata, 'owner' | '_public'>, DatabaseElement {
+export abstract class MediaElement implements Omit<BaseMetadata, 'owner' | '_public'>, DatabaseElement {
   public id: number | null = null;
   public title: string;
   public releaseYear: number;
@@ -76,7 +76,7 @@ export abstract class MediaElement implements Omit<MediaMetadata, 'owner' | '_pu
     return this._public;
   }
 
-  public static isMediaMetadata(obj: unknown): obj is MediaMetadata & { id: number } {
+  public static isMediaMetadata(obj: unknown): obj is BaseMetadata & { id: number } {
     return (
       obj !== null &&
       typeof obj === 'object' &&
@@ -99,7 +99,7 @@ export abstract class MediaElement implements Omit<MediaMetadata, 'owner' | '_pu
 
   public abstract printLocation(): void;
 
-  public getBaseMetadata(): MediaMetadata {
+  public getBaseMetadata(): BaseMetadata {
     return {
       id: this.id,
       title: this.title,
@@ -110,7 +110,7 @@ export abstract class MediaElement implements Omit<MediaMetadata, 'owner' | '_pu
     };
   }
 
-  public setBaseMetadata(metadata: Omit<MediaMetadata, 'id'>): void {
+  public setBaseMetadata(metadata: Omit<BaseMetadata, 'id'>): void {
     this.title = metadata.title;
     this.releaseYear = metadata.releaseYear;
     this.path = metadata.path;
