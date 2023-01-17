@@ -99,6 +99,25 @@ export abstract class MediaElement implements Omit<MediaMetadata, 'owner' | '_pu
 
   public abstract printLocation(): void;
 
+  public getBaseMetadata(): MediaMetadata {
+    return {
+      id: this.id,
+      title: this.title,
+      releaseYear: this.releaseYear,
+      path: this.path,
+      owner: this.owner,
+      _public: this._public,
+    };
+  }
+
+  public setBaseMetadata(metadata: Omit<MediaMetadata, 'id'>): void {
+    this.title = metadata.title;
+    this.releaseYear = metadata.releaseYear;
+    this.path = metadata.path;
+    this.owner = metadata.owner;
+    this._public = metadata._public;
+  }
+
   public setMetadata(metadata: unknown): void {
     throw new Error('Method not implemented.');
   }

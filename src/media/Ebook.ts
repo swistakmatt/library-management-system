@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import { MediaElement } from './MediaElement.js';
+import { MediaMemento, MediaMementoOriginator, Memento } from './repositories/MediaMemento.js';
 
 export interface EbookMetadata {
   numberOfPages: number;
@@ -8,7 +9,7 @@ export interface EbookMetadata {
   author: string;
 }
 
-export class Ebook extends MediaElement {
+export class Ebook extends MediaElement implements MediaMementoOriginator<EbookMetadata> {
   public metadata: EbookMetadata;
 
   constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: EbookMetadata) {
@@ -57,5 +58,33 @@ export class Ebook extends MediaElement {
       'author' in obj &&
       typeof obj.author === 'string'
     );
+  }
+
+  public save(): Memento<EbookMetadata> {
+    const memento = new MediaMemento({
+      ...this.getBaseMetadata(),
+      ...this.metadata,
+    });
+
+    return memento;
+  }
+
+  public restore(memento: Memento<EbookMetadata>): void {
+    const state = memento.getState();
+
+    this.setBaseMetadata({
+      title: state.title,
+      releaseYear: state.releaseYear,
+      path: state.path,
+      owner: state.owner,
+      _public: state._public,
+    });
+
+    this.setMetadata({
+      numberOfPages: state.numberOfPages,
+      genre: state.genre,
+      releaseDate: state.releaseDate,
+      author: state.author,
+    });
   }
 }

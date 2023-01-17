@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import { MediaElement } from './MediaElement.js';
+import { MediaMemento, MediaMementoOriginator, Memento } from './repositories/MediaMemento.js';
 
 export interface SongMetadata {
   length: number;
@@ -10,7 +11,7 @@ export interface SongMetadata {
   trackNumber: number;
 }
 
-export class Song extends MediaElement {
+export class Song extends MediaElement implements MediaMementoOriginator<SongMetadata> {
   public metadata: SongMetadata;
 
   constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: SongMetadata) {
@@ -69,5 +70,35 @@ export class Song extends MediaElement {
       'trackNumber' in obj &&
       typeof obj.trackNumber === 'number'
     );
+  }
+
+  public save(): Memento<SongMetadata> {
+    const memento = new MediaMemento({
+      ...this.getBaseMetadata(),
+      ...this.metadata,
+    });
+
+    return memento;
+  }
+
+  public restore(memento: Memento<SongMetadata>): void {
+    const state = memento.getState();
+
+    this.setBaseMetadata({
+      title: state.title,
+      releaseYear: state.releaseYear,
+      path: state.path,
+      owner: state.owner,
+      _public: state._public,
+    });
+
+    this.setMetadata({
+      length: state.length,
+      genre: state.genre,
+      releaseDate: state.releaseDate,
+      artist: state.artist,
+      album: state.album,
+      trackNumber: state.trackNumber,
+    });
   }
 }

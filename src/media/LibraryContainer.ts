@@ -22,7 +22,7 @@ type OneOf<T extends unknown[]> = {
   [K in keyof T]: Expand<T[K] & Partial<Record<Exclude<UnionKeys<T[number]>, keyof T[K]>, never>>>;
 }[number];
 
-type MediaMetadata = OneOf<[MovieMetadata, EpisodeMetadata, SongMetadata, EbookMetadata]>;
+export type MediaMetadata = OneOf<[MovieMetadata, EpisodeMetadata, SongMetadata, EbookMetadata]>;
 
 type AddMedia<T extends MediaMetadata = MediaMetadata> = (
   user: User,
@@ -264,7 +264,7 @@ export class LibraryContainer {
       throw new Error('Insufficient permissions to remove this element!');
     }
 
-    repository.delete(target);
+    await repository.delete(target);
   }
 
   public async getAlbum(song: Song): Promise<Album> {

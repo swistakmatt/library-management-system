@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import { MediaElement } from './MediaElement.js';
+import { MediaMemento, MediaMementoOriginator, Memento } from './repositories/MediaMemento.js';
 
 export interface MovieMetadata {
   length: number;
@@ -8,7 +9,7 @@ export interface MovieMetadata {
   cast: { [actor: string]: string };
 }
 
-export class Movie extends MediaElement {
+export class Movie extends MediaElement implements MediaMementoOriginator<MovieMetadata> {
   public metadata: MovieMetadata;
 
   constructor(title: string, releaseYear: number, path: string, owner: string, _public: boolean, metadata: MovieMetadata) {
@@ -58,5 +59,33 @@ export class Movie extends MediaElement {
       'cast' in obj &&
       typeof obj.cast === 'object'
     );
+  }
+
+  public save(): Memento<MovieMetadata> {
+    const memento = new MediaMemento({
+      ...this.getBaseMetadata(),
+      ...this.metadata,
+    });
+
+    return memento;
+  }
+
+  public restore(memento: Memento<MovieMetadata>): void {
+    const state = memento.getState();
+
+    this.setBaseMetadata({
+      title: state.title,
+      releaseYear: state.releaseYear,
+      path: state.path,
+      owner: state.owner,
+      _public: state._public,
+    });
+
+    this.setMetadata({
+      cast: state.cast,
+      genre: state.genre,
+      length: state.length,
+      releaseDate: state.releaseDate,
+    });
   }
 }
