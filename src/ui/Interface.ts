@@ -112,41 +112,48 @@ export class Interface {
           console.clear();
           if (activeUser !== null) {
             await library.printUserMedia(activeUser);
+            readlineSync.keyInPause();
           }
           break;
         case 19:
           console.clear();
           if (activeUser !== null) {
             await Menu.printMovie(activeUser, library);
+            readlineSync.keyInPause();
           }
           break;
         case 20:
           console.clear();
           if (activeUser !== null) {
             await Menu.printEpisode(activeUser, library);
+            readlineSync.keyInPause();
           }
           break;
         case 21:
           console.clear();
           if (activeUser !== null) {
             await Menu.printSong(activeUser, library);
+            readlineSync.keyInPause();
           }
           break;
         case 22:
           if (activeUser !== null) {
             await Menu.printEbook(activeUser, library);
+            readlineSync.keyInPause();
           }
           break;
         case 23:
           console.clear();
           if (activeUser !== null) {
             await Menu.printAlbum(activeUser, library);
+            readlineSync.keyInPause();
           }
           break;
         case 26:
           console.clear();
           if (activeUser !== null) {
             activeUser.print();
+            readlineSync.keyInPause();
           }
           break;
         case 0:
@@ -156,6 +163,7 @@ export class Interface {
         default:
           console.clear();
           console.log(chalk.red('This option does not exist!'));
+          readlineSync.keyInPause();
           break;
       }
 

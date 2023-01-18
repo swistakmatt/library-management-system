@@ -58,8 +58,8 @@ export class LibraryContainer {
   }
 
   public addMedia: AddMedia = async (user, title, releaseYear, path, publicAccess, metadata) => {
-    if (Movie.isMovieMetadata(metadata)) await this.addMovie(user, title, releaseYear, path, publicAccess, metadata);
-    else if (Episode.isEpisodeMetadata(metadata)) await this.addEpisode(user, title, releaseYear, path, publicAccess, metadata);
+    if (Episode.isEpisodeMetadata(metadata)) await this.addEpisode(user, title, releaseYear, path, publicAccess, metadata);
+    else if (Movie.isMovieMetadata(metadata)) await this.addMovie(user, title, releaseYear, path, publicAccess, metadata);
     else if (Song.isSongMetadata(metadata)) await this.addSong(user, title, releaseYear, path, publicAccess, metadata);
     else if (Ebook.isEbookMetadata(metadata)) await this.addEbook(user, title, releaseYear, path, publicAccess, metadata);
     else throw new Error('Unknown media type');
