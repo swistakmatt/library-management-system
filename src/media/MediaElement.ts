@@ -121,4 +121,8 @@ export abstract class MediaElement implements Omit<BaseMetadata, 'owner' | '_pub
   public setMetadata(metadata: unknown): void {
     throw new Error('Method not implemented.');
   }
+
+  public getMetadata(): unknown {
+    throw new Error('Method not implemented.');
+  }
 }

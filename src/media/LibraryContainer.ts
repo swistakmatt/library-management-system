@@ -222,7 +222,7 @@ export class LibraryContainer {
   public async printUserMedia(user: User): Promise<void> {
     let counter = 0;
 
-    console.log(chalk.yellow('Number of elements in the library:'), this.countUserLibrary(user));
+    console.log(chalk.yellow('Number of elements in the library:'), await this.countUserLibrary(user));
     console.log(chalk.yellow('Movies:'), await this.countUserMedia(user, this.movies));
     for await (const movie of this.movies) {
       if (movie.getOwner() === user.getUsername()) {

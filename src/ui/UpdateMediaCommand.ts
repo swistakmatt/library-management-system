@@ -8,6 +8,7 @@ import { RepositoryInterface } from '../media/repositories/Repository.js';
 import { Song, SongMetadata } from '../media/Song.js';
 import { User } from '../users/User.js';
 import { Command } from './Command.js';
+import util from 'util';
 
 
 export class UpdateMediaCommand<T extends MediaMetadata, U extends MediaElement & MediaMementoOriginator<T>> implements Command {
@@ -38,7 +39,7 @@ export class UpdateMediaCommand<T extends MediaMetadata, U extends MediaElement 
       this.media.restore(this.memento);
       const { title, releaseYear } = this.baseMetadata;
 
-      await this.container.editMetadata(this.user, this.repository, title, releaseYear, { ...this.baseMetadata, ...this.metadata });
+      await this.container.editMetadata(this.user, this.repository, title, releaseYear, { ...this.media.getBaseMetadata(), ...this.media.getMetadata() as T });
     }
   }
 }
