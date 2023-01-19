@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { Song, SongMetadata } from './Song.js';
+import { Song, SongMetadata } from './Song';
 
 export class Album {
   private metadata: SongMetadata;

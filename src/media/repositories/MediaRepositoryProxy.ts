@@ -1,5 +1,5 @@
-import { DatabaseElement } from '../../database/DatabaseElement.js';
-import { Repository, RepositoryInterface } from './Repository.js';
+import { DatabaseElement } from '../../database/DatabaseElement';
+import { Repository, RepositoryInterface } from './Repository';
 
 
 export class MediaRepositoryProxy<T extends DatabaseElement> implements RepositoryInterface<T> {
@@ -71,7 +71,7 @@ export class MediaRepositoryProxy<T extends DatabaseElement> implements Reposito
     this.readCache.delete(element.getId() as number);
   }
 
-  public async *[Symbol.asyncIterator](): AsyncIterableIterator<T> {
+  public async* [Symbol.asyncIterator](): AsyncIterableIterator<T> {
     if (!this.ready) await this.syncReadCache();
 
     yield* this.readCache.values();

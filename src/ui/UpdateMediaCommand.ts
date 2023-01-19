@@ -1,13 +1,13 @@
-import { Ebook, EbookMetadata } from '../media/Ebook.js';
-import { Episode, EpisodeMetadata } from '../media/Episode.js';
-import { LibraryContainer, MediaMetadata } from '../media/LibraryContainer.js';
-import { BaseMetadata, MediaElement } from '../media/MediaElement.js';
-import { Movie, MovieMetadata } from '../media/Movie.js';
-import { MediaMementoOriginator, Memento } from '../media/repositories/MediaMemento.js';
-import { RepositoryInterface } from '../media/repositories/Repository.js';
-import { Song, SongMetadata } from '../media/Song.js';
-import { User } from '../users/User.js';
-import { Command } from './Command.js';
+import { Ebook, EbookMetadata } from '../media/Ebook';
+import { Episode, EpisodeMetadata } from '../media/Episode';
+import { LibraryContainer, MediaMetadata } from '../media/LibraryContainer';
+import { BaseMetadata, MediaElement } from '../media/MediaElement';
+import { Movie, MovieMetadata } from '../media/Movie';
+import { MediaMementoOriginator, Memento } from '../media/repositories/MediaMemento';
+import { RepositoryInterface } from '../media/repositories/Repository';
+import { Song, SongMetadata } from '../media/Song';
+import { User } from '../users/User';
+import { Command } from './Command';
 import util from 'util';
 
 

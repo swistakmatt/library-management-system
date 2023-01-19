@@ -1,4 +1,4 @@
-import { MediaElement } from '../MediaElement.js';
+import { MediaElement } from '../MediaElement';
 
 export interface AbstractMediaFactory {
   createMedia(): MediaElement;

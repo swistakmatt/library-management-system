@@ -1,15 +1,15 @@
-import { User } from '../users/User.js';
+import { User } from '../users/User';
 import * as readlineSync from 'readline-sync';
-import { UserContainer } from '../users/UserContainer.js';
-import { LibraryContainer } from '../media/LibraryContainer.js';
+import { UserContainer } from '../users/UserContainer';
+import { LibraryContainer } from '../media/LibraryContainer';
 import chalk from 'chalk';
-import { Movie, MovieMetadata } from '../media/Movie.js';
-import { EpisodeMetadata } from '../media/Episode.js';
-import { SongMetadata } from '../media/Song.js';
-import { EbookMetadata } from '../media/Ebook.js';
-import { Command } from './Command.js';
-import { BaseMetadata } from '../media/MediaElement.js';
-import { UpdateEbookCommand, UpdateEpisodeCommand, UpdateMovieCommand, UpdateSongCommand } from './UpdateMediaCommand.js';
+import { Movie, MovieMetadata } from '../media/Movie';
+import { EpisodeMetadata } from '../media/Episode';
+import { SongMetadata } from '../media/Song';
+import { EbookMetadata } from '../media/Ebook';
+import { Command } from './Command';
+import { BaseMetadata } from '../media/MediaElement';
+import { UpdateEbookCommand, UpdateEpisodeCommand, UpdateMovieCommand, UpdateSongCommand } from './UpdateMediaCommand';
 import util from 'util';
 
 

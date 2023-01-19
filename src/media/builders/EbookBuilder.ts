@@ -1,5 +1,5 @@
-import { Ebook, EbookMetadata } from '../Ebook.js';
-import { MediaElementBuilder } from './MediaElementBuilder.js';
+import { Ebook, EbookMetadata } from '../Ebook';
+import { MediaElementBuilder } from './MediaElementBuilder';
 
 export class EbookBuilder extends MediaElementBuilder {
   public metadata: EbookMetadata;

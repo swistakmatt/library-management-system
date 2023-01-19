@@ -4,7 +4,9 @@
     "noEmit": true
   },
   "include": [
-    "src",
-    "test",
-  ]
+    "src/",
+    "tests/",
+    "jest.config.ts.ts"
+  ],
+  "exclude": []
 }

@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { DatabaseElement } from '../database/DatabaseElement.js';
+import { DatabaseElement } from '../database/DatabaseElement';
 
 export interface UserConstructor {
   username: string;

@@ -1,5 +1,5 @@
-import { MediaElementBuilder } from './MediaElementBuilder.js';
-import { Song, SongMetadata } from '../Song.js';
+import { MediaElementBuilder } from './MediaElementBuilder';
+import { Song, SongMetadata } from '../Song';
 
 export class SongBuilder extends MediaElementBuilder {
   private metadata: SongMetadata;

@@ -1,7 +1,7 @@
-import { MovieBuilder } from '../../media/builders/MovieBuilder.js';
-import { Movie } from '../../media/Movie.js';
-import { Database } from '../../database/Database.js';
-import { Repository } from './Repository.js';
+import { MovieBuilder } from '../../media/builders/MovieBuilder';
+import { Movie } from '../../media/Movie';
+import { Database } from '../../database/Database';
+import { Repository } from './Repository';
 
 
 export class MovieRepository extends Repository<Movie> {

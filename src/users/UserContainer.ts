@@ -1,6 +1,6 @@
 import chalk from 'chalk';
-import { User } from './User.js';
-import { UserRepository } from './UserRepository.js';
+import { User } from './User';
+import { UserRepository } from './UserRepository';
 
 export class UserContainer {
   private userRepository: UserRepository = new UserRepository();

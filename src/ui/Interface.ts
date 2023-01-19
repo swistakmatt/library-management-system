@@ -1,8 +1,8 @@
-import { Menu } from './Menu.js';
+import { Menu } from './Menu';
 import * as readlineSync from 'readline-sync';
-import { UserContainer } from '../users/UserContainer.js';
-import { LibraryContainer } from '../media/LibraryContainer.js';
-import { User } from '../users/User.js';
+import { UserContainer } from '../users/UserContainer';
+import { LibraryContainer } from '../media/LibraryContainer';
+import { User } from '../users/User';
 import chalk from 'chalk';
 
 export class Interface {
@@ -177,14 +177,12 @@ export class Interface {
           case 24:
             console.clear();
             if (activeUser !== null) {
-              console.log('UNDO');
               await Menu.undo(activeUser, library);
             }
             break;
           case 25:
             console.clear();
             if (activeUser !== null) {
-              console.log('UNDO UNDO');
               await Menu.undoUndo(activeUser, library);
             }
             break;

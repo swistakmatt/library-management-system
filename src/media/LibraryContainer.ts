@@ -1,18 +1,18 @@
 /* eslint-disable no-empty */
-import { Album } from './Album.js';
-import { Song, SongMetadata } from './Song.js';
-import { Ebook, EbookMetadata } from './Ebook.js';
-import { Movie, MovieMetadata } from './Movie.js';
-import { Episode, EpisodeMetadata } from './Episode.js';
-import { User } from '../users/User.js';
-import { BaseMetadata, MediaElement } from './MediaElement.js';
+import { Album } from './Album';
+import { Song, SongMetadata } from './Song';
+import { Ebook, EbookMetadata } from './Ebook';
+import { Movie, MovieMetadata } from './Movie';
+import { Episode, EpisodeMetadata } from './Episode';
+import { User } from '../users/User';
+import { BaseMetadata, MediaElement } from './MediaElement';
 import chalk from 'chalk';
-import { MediaRepositoryProxy } from './repositories/MediaRepositoryProxy.js';
-import { MovieRepository } from './repositories/MovieRepository.js';
-import { SongRepository } from './repositories/SongRepository.js';
-import { EbookRepository } from './repositories/EbookRepository.js';
-import { EpisodeRepository } from './repositories/EpisodeRepository.js';
-import { RepositoryInterface } from './repositories/Repository.js';
+import { MediaRepositoryProxy } from './repositories/MediaRepositoryProxy';
+import { MovieRepository } from './repositories/MovieRepository';
+import { SongRepository } from './repositories/SongRepository';
+import { EbookRepository } from './repositories/EbookRepository';
+import { EpisodeRepository } from './repositories/EpisodeRepository';
+import { RepositoryInterface } from './repositories/Repository';
 
 type UnionKeys<T> = T extends T ? keyof T : never;
 

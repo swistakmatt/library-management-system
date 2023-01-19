@@ -1,5 +1,5 @@
-import { Database } from '../../database/Database.js';
-import { DatabaseElement } from '../../database/DatabaseElement.js';
+import { Database } from '../../database/Database';
+import { DatabaseElement } from '../../database/DatabaseElement';
 
 
 export interface RepositoryInterface<T extends DatabaseElement> extends AsyncIterable<T> {
@@ -36,8 +36,6 @@ export abstract class Repository<T extends DatabaseElement> implements Repositor
   public async getAll(): Promise<T[]> {
     const db = Database.getConnection();
 
-    console.log(this.tableName);
-
     // i know this is potentially dangerous but it simplifies codebase
     const statement = await db.all(`SELECT * FROM ${this.tableName}`);
 
@@ -68,7 +66,7 @@ export abstract class Repository<T extends DatabaseElement> implements Repositor
     });
   }
 
-  public async *[Symbol.asyncIterator](): AsyncIterator<T> {
+  public async* [Symbol.asyncIterator](): AsyncIterator<T> {
     const entries = await this.getAll();
 
     yield* entries;

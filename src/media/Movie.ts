@@ -1,6 +1,6 @@
 import chalk from 'chalk';
-import { MediaElement } from './MediaElement.js';
-import { MediaMemento, MediaMementoOriginator, Memento } from './repositories/MediaMemento.js';
+import { MediaElement } from './MediaElement';
+import { MediaMemento, MediaMementoOriginator, Memento } from './repositories/MediaMemento';
 
 export interface MovieMetadata {
   length: number;

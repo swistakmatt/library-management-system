@@ -1,5 +1,5 @@
-import { Database } from './database/Database.js';
-import { Interface } from './ui/Interface.js';
+import { Database } from './database/Database';
+import { Interface } from './ui/Interface';
 
 
 const main = async () => {
@@ -11,4 +11,4 @@ const main = async () => {
   }
 };
 
-await main();
+void main();

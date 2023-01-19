@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from 'fs';
 import sqlite from 'sqlite3';
-import { AsyncDatabase } from './AsyncDatabase.js';
+import { AsyncDatabase } from './AsyncDatabase';
 
 
 export class Database {

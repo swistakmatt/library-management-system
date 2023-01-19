@@ -1,6 +1,6 @@
-import { MovieBuilder } from '../builders/MovieBuilder.js';
-import { MediaElement } from '../MediaElement.js';
-import { AbstractMediaFactory } from './AbstractFactory.js';
+import { MovieBuilder } from '../builders/MovieBuilder';
+import { MediaElement } from '../MediaElement';
+import { AbstractMediaFactory } from './AbstractFactory';
 
 
 export class MovieFactory implements AbstractMediaFactory {

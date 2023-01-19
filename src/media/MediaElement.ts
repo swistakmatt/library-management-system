@@ -1,4 +1,4 @@
-import { DatabaseElement } from '../database/DatabaseElement.js';
+import { DatabaseElement } from '../database/DatabaseElement';
 
 export interface BaseMetadata {
   id: number | null;

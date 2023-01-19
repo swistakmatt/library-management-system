@@ -1,6 +1,6 @@
-import { EbookBuilder } from '../builders/EbookBuilder.js';
-import { MediaElement } from '../MediaElement.js';
-import { AbstractMediaFactory } from './AbstractFactory.js';
+import { EbookBuilder } from '../builders/EbookBuilder';
+import { MediaElement } from '../MediaElement';
+import { AbstractMediaFactory } from './AbstractFactory';
 
 
 export class EbookFactory implements AbstractMediaFactory {

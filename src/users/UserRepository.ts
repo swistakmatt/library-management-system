@@ -1,6 +1,6 @@
-import { Repository } from '../media/repositories/Repository.js';
-import { Database } from '../database/Database.js';
-import { User, UserConstructor } from './User.js';
+import { Repository } from '../media/repositories/Repository';
+import { Database } from '../database/Database';
+import { User, UserConstructor } from './User';
 
 
 export class UserRepository extends Repository<User> {
@@ -49,8 +49,6 @@ export class UserRepository extends Repository<User> {
         $admin: instance.isAdmin(),
       }
     );
-
-    console.log(statement);
 
     if (this.statementContainsId(statement)) {
       return statement.id;
