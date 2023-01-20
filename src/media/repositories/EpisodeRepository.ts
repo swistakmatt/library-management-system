@@ -59,9 +59,9 @@ export class EpisodeRepository extends Repository<Episode> {
         genre = $genre,
         releaseDate = $releaseDate,
         cast = $cast,
-        $series: $series,
-        $episodeNumber: $episodeNumber,
-        $seasonNumber: $seasonNumber,
+        series = $series,
+        episodeNumber = $episodeNumber,
+        seasonNumber = $seasonNumber
         
         WHERE id = $id`,
       {
