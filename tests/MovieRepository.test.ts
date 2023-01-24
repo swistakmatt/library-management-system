@@ -18,13 +18,13 @@ const movieData = {
 };
 
 beforeAll(async () => {
-  await Database.getConnection().run('DROP TABLE User');
+  await Database.getConnection().run('DROP TABLE IF EXISTS Movie');
   await Database.getInstance().initTables();
 });
 
 beforeEach(async () => {
   const db = Database.getConnection();
-  await db.run('DELETE FROM User');
+  await db.run('DELETE FROM Movie');
 });
 
 beforeEach(() => {

@@ -1,6 +1,7 @@
 import { Song } from '../src/media/Song';
 import { SongRepository } from '../src/media/repositories/SongRepository';
 import { SongBuilder } from '../src/media/builders/SongBuilder';
+import { Database } from '../src/database/Database';
 
 let repository: SongRepository;
 let song: Song;
@@ -17,6 +18,16 @@ const songData = {
   releaseDate: '2020-01-01',
   trackNumber: 1,
 };
+
+beforeAll(async () => {
+  await Database.getConnection().run('DROP TABLE IF EXISTS Song');
+  await Database.getInstance().initTables();
+});
+
+beforeEach(async () => {
+  const db = Database.getConnection();
+  await db.run('DELETE FROM Song');
+});
 
 beforeEach(() => {
   repository = new SongRepository();

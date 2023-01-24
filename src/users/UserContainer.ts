@@ -53,11 +53,13 @@ export class UserContainer {
       );
     }
 
-    if (this.userRepository.hasUsername(username) === undefined) {
+    if (await this.userRepository.hasUsername(username) === undefined) {
       throw new Error('User does not exist!');
     }
 
-    await this.userRepository.delete(user);
+    const target = await this.userRepository.getByUsername(username);
+
+    await this.userRepository.delete(target);
   }
 
   public async setDisplayName(

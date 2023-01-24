@@ -5,7 +5,7 @@ import { Episode } from '../src/media/Episode';
 const repository = new EpisodeRepository();
 
 beforeAll(async () => {
-  await Database.getConnection().run('DROP TABLE Episode');
+  await Database.getConnection().run('DROP TABLE IF EXISTS Episode');
   await Database.getInstance().initTables();
 });
 

@@ -5,7 +5,7 @@ import { Ebook } from '../src/media/Ebook';
 const repository = new EbookRepository();
 
 beforeAll(async () => {
-  await Database.getConnection().run('DROP TABLE Ebook');
+  await Database.getConnection().run('DROP TABLE IF EXISTS Ebook');
   await Database.getInstance().initTables();
 });
 
